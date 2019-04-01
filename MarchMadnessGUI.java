@@ -1,4 +1,4 @@
-//package marchmadness;
+package marchmadness;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 
 /**
  *  MarchMadnessGUI
@@ -483,19 +484,24 @@ public class MarchMadnessGUI extends Application {
      * @return deserialized bracket 
      */
     private Bracket deseralizeBracket(String filename){
-        Bracket bracket = null;
-        FileInputStream inStream = null;
-        ObjectInputStream in = null;
+        
+        // worked on by Elizabeth 4/1/19
+        
+        // no default constructor for bracket - we fixed
+        Bracket bracket = new Bracket();
+        
     try 
     {
-        inStream = new FileInputStream(filename);
-        in = new ObjectInputStream(inStream);
+        FileInputStream inStream = new FileInputStream(filename);
+        ObjectInputStream in = new ObjectInputStream(inStream);
         bracket = (Bracket) in.readObject();
+        
         in.close();
     }catch (IOException | ClassNotFoundException e) {
       // Grant osborn 5/6 hopefully this never happens either
       showError(new Exception("Error loading bracket \n"+e.getMessage(),e),false);
     } 
+    // we should really move in.close() into finally block
     return bracket;
     }
     

@@ -1,3 +1,5 @@
+
+package marchmadness;
 import java.util.ArrayList;
 import java.io.Serializable; 
 
@@ -18,6 +20,14 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int MIDWEST_BRACKET = 5;
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
+    
+    //Default constructor added by Elizabeth 4/1/19
+    public Bracket(){
+        bracket = new ArrayList<String>();
+        playerName = "default";
+        password = "1234";
+        
+    }
 
     //Constructor
     /**
