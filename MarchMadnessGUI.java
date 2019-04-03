@@ -188,8 +188,12 @@ public class MarchMadnessGUI extends Application {
    private void chooseBracket(){
         //login.setDisable(true);
         btoolBar.setDisable(false);
-        bracketPane=new BracketPane(selectedBracket);
-        displayPane(bracketPane);
+        
+        // this line of code was causing a problem - 
+        // basically overwriting the bracket every time
+        // and so you could never finalize
+        //bracketPane=new BracketPane(selectedBracket);
+        displayPane(new BracketPane(selectedBracket));
 
     }
     /**
@@ -200,8 +204,8 @@ public class MarchMadnessGUI extends Application {
       
       
       bracketPane.clear();
-      bracketPane=new BracketPane(selectedBracket);
-      displayPane(bracketPane);
+      //bracketPane=new BracketPane(selectedBracket);
+      displayPane(new BracketPane(selectedBracket));
         
     }
     
@@ -212,8 +216,8 @@ public class MarchMadnessGUI extends Application {
         if(confirmReset()){
             //horrible hack to reset
             selectedBracket=new Bracket(startingBracket);
-            bracketPane=new BracketPane(selectedBracket);
-            displayPane(bracketPane);
+            //bracketPane=new BracketPane(selectedBracket);
+            displayPane(new BracketPane(selectedBracket));
         }
     }
     
