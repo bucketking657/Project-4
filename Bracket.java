@@ -90,6 +90,15 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      * @param root, everything below and including this is reset
      */
     public void resetSubtree(int root){
+    	if(root==7)//special case for when clearing the full bracket
+    	{
+    		resetFullTree(3);//resets top left bracket
+    		resetFullTree(4);//resets bottom left bracket
+    		resetFullTree(5);//resets top right bracket
+    		resetFullTree(6);//resets bottom right bracket
+    		resetFullTree(0);//resets the final 4  choices
+    	}
+    	else
         if (root ==0){//special behavior to reset final 4
             for (int i = 0; i < 7; i++) {
                 bracket.set(i,"");
@@ -105,6 +114,29 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             if (child2 < 64) {
                 resetSubtree(child2);
             }
+            if(root<63)
+            bracket.set(root, "");
+        }
+    }
+    public void resetFullTree(int root)
+    {
+    	//System.out.println("Num: "+root+" TEAM: "+bracket.get(root));
+    	if (root ==0){//special behavior to reset final 4
+            for (int i = 0; i < 7; i++) {
+                bracket.set(i,"");
+            }
+        }
+        else {
+            int child1 = 2 * root + 1;
+            int child2 = 2 * root + 2;
+
+            if (child1 < 64) {//child is above round 1
+                resetFullTree(child1);
+            }
+            if (child2 < 64) {
+                resetFullTree(child2);
+            }
+            if(root<63)
             bracket.set(root, "");
         }
     }
