@@ -16,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -77,10 +76,11 @@ public class BracketPane extends BorderPane {
                         clearAbove(nextTreeNum);
                 }
         }
-        
+       
         
         public void clear(){
             clearSubtree(displayedSubtree);
+            
         }
 
         /**
@@ -264,7 +264,10 @@ public class BracketPane extends BorderPane {
          * @param position The position to clear after
          */
         public void clearSubtree(int position) {
-                currentBracket.resetSubtree(position);
+        	String currentName = nodeMap.get(position).getName();		//added by zion 4/3, stores current name to currentName before erasing
+        	currentBracket.resetSubtree(position);
+        	currentBracket.removeAboveCurrent(position,currentName);	//added by zion 4/3, removes parent name if currentName equals parent name  */
+                
         }
 
         /**
@@ -463,7 +466,6 @@ public class BracketPane extends BorderPane {
                  */
                 public void setName(String teamName) {
                         this.teamName = teamName;
-                        name.setFont(new Font(10));
                         name.setText(teamName);
                 }
         }

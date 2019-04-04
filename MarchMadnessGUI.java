@@ -199,8 +199,8 @@ public class MarchMadnessGUI extends Application {
       
       
       bracketPane.clear();
-      bracketPane=new BracketPane(selectedBracket);
-      displayPane(bracketPane);
+      //bracketPane=new BracketPane(selectedBracket);
+      displayPane(new BracketPane(selectedBracket));
         
     }
     
@@ -221,7 +221,7 @@ public class MarchMadnessGUI extends Application {
            btoolBar.setDisable(true);
            bracketPane.setDisable(true);
            simulate.setDisable(false);
-           login.setDisable(false);
+           login.setDisable(true);											//added by zion 4/3 disables login when user finalizes bracket
            //save the bracket along with account info
            seralizeBracket(selectedBracket);
             
