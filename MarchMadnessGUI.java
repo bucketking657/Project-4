@@ -179,12 +179,14 @@ public class MarchMadnessGUI extends Application {
       * Displays Simulated Bracket
       * 
       */
+    //modified by chris
     private void viewBracket()
     {
        //selectedBracket=simResultBracket;
        createdBracket=selectedBracket;//saves your bracket
        bracketPane=new BracketPane(simResultBracket,selectedBracket);
        //selectedBracket=simResultBracket;
+       //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
        GridPane full =new GridPane();
    	   full.add(new ScrollPane(bracketPane.getFullPane()),0, 0);
    	   full.setAlignment(Pos.CENTER);
@@ -193,9 +195,12 @@ public class MarchMadnessGUI extends Application {
    	
    	   displayPane(full); 
     }
+    //Chris
     private void randomSelection()
     {
+    	selectedBracket=startingBracket;//reset selected bracket to starting bracket -> fixed an error where a non-new user couldnt use the randomize button
     	teamInfo.simulate(selectedBracket);
+
     	bracketPane=new BracketPane(selectedBracket);
         //selectedBracket=simResultBracket;
         GridPane full = new GridPane();
@@ -204,14 +209,15 @@ public class MarchMadnessGUI extends Application {
         full.setDisable(false);
         displayPane(full); 
     }
+    //Chris
     private void yourBracket()
     {
-    	bracketPane = new BracketPane(createdBracket,simResultBracket);
+    	bracketPane = new BracketPane(createdBracket,simResultBracket);//created bracket is the final version of the bracket you created
     	GridPane full =new GridPane();
     	full.add(new ScrollPane(bracketPane.getFullPane()),0, 0);
     	full.setAlignment(Pos.CENTER);
     	//full.setDisable(true);
-    	full.setMouseTransparent(true);
+    	full.setMouseTransparent(true);//similar to disapling the button, but it doesnt grey out the pane
     	displayPane(full);
     }
     
