@@ -30,6 +30,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
 
     }
     
+
     //Constructor
     /**
      *Cosntructor using an ArrayList of strings to start
