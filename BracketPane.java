@@ -231,7 +231,7 @@ public class BracketPane extends BorderPane {
                                 setCenter(center);
                                 //Grant 5/7 this is for clearing the tree it kind of works 
                                 displayedSubtree=buttons.indexOf(t)==7?0:buttons.indexOf(t)+3;
-                                System.out.println("DisplayedSubTreeNumber: "+displayedSubtree);
+                               // System.out.println("DisplayedSubTreeNumber: "+displayedSubtree);
                         });
                 }
 
@@ -313,7 +313,7 @@ public class BracketPane extends BorderPane {
                             setCenter(center);
                             //Grant 5/7 this is for clearing the tree it kind of works 
                             displayedSubtree=buttons.indexOf(t)==7?0:buttons.indexOf(t)+3;
-                            System.out.print("DisplayedSubTreeNumber: "+displayedSubtree);
+                           // System.out.print("DisplayedSubTreeNumber: "+displayedSubtree);
                     });
             }
 
@@ -353,7 +353,7 @@ public class BracketPane extends BorderPane {
          * @param position The position to clear after
          */
         public void clearSubtree(int position) {
-        	System.out.println("Position: "+position);
+        	//System.out.println("Position: "+position);
                 currentBracket.resetSubtree(position);
         }
 
