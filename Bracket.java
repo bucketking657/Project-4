@@ -18,7 +18,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int MIDWEST_BRACKET = 5;
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
-
+    private boolean isSim=false;//Value that determines whether or not this is a simulated bracket
     //Constructor
     /**
      *Cosntructor using an ArrayList of strings to start
@@ -31,6 +31,16 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
+    //method: Sets the isSim value to the specified value
+    public void setSim(boolean b)
+    {
+    	isSim=b;
+    }
+    //method: Returns the value of isSim
+    public boolean getSim()
+    {
+    	return isSim;
+    }
     /**
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
