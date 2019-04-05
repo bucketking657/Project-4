@@ -84,6 +84,7 @@ public class MarchMadnessGUI extends Application {
             teamInfo=new TournamentInfo();
             startingBracket= new Bracket(TournamentInfo.loadStartingBracket());
             simResultBracket=new Bracket(TournamentInfo.loadStartingBracket());
+            simResultBracket.setSim(true);
         } catch (IOException ex) {
             showError(new Exception("Can't find "+ex.getMessage(),ex),true);
         }
@@ -151,10 +152,11 @@ public class MarchMadnessGUI extends Application {
      * 
      */
     private void login(){            
-        login.setDisable(true);
+        login.setDisable(false);
         simulate.setDisable(true);
-        scoreBoardButton.setDisable(true);
-        viewBracketButton.setDisable(true);
+        scoreBoardButton.setDisable(false);
+        viewBracketButton.setDisable(true);//changed to true. This allows you to view the scoreboard before logging in. 
+        //However, since the brackets havent been simulated yet there are not scores
         btoolBar.setDisable(true);
         displayPane(loginP);
     }
@@ -172,8 +174,9 @@ public class MarchMadnessGUI extends Application {
       * 
       */
     private void viewBracket(){
+       //selectedBracket=simResultBracket;
+       bracketPane=new BracketPane(simResultBracket,selectedBracket);
        selectedBracket=simResultBracket;
-       bracketPane=new BracketPane(selectedBracket);
        GridPane full = bracketPane.getFullPane();
        full.setAlignment(Pos.CENTER);
        full.setDisable(true);
