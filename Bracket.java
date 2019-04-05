@@ -90,6 +90,24 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      * @param root, everything below and including this is reset
      */
     public void resetSubtree(int root){
+
+
+    	//System.out.println("Root:"+root);
+    	if(root==3)
+    	{
+    		resetFullTree(3);
+    	}
+    	else
+    	if(root==7||root==0)//special case for when clearing the full bracket
+    	{
+    		resetFullTree(3);//resets top left bracket
+    		resetFullTree(4);//resets bottom left bracket
+    		resetFullTree(5);//resets top right bracket
+    		resetFullTree(6);//resets bottom right bracket
+    		resetFullTree(0);//resets the final 4  choices
+    	}
+    	else
+
         if (root ==0){//special behavior to reset final 4
             for (int i = 0; i < 7; i++) {
                 bracket.set(i,"");
