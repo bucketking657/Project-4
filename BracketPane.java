@@ -231,6 +231,7 @@ public class BracketPane extends BorderPane {
                                 setCenter(center);
                                 //Grant 5/7 this is for clearing the tree it kind of works 
                                 displayedSubtree=buttons.indexOf(t)==7?0:buttons.indexOf(t)+3;
+                                System.out.println("DisplayedSubTreeNumber: "+displayedSubtree);
                         });
                 }
 
@@ -312,6 +313,7 @@ public class BracketPane extends BorderPane {
                             setCenter(center);
                             //Grant 5/7 this is for clearing the tree it kind of works 
                             displayedSubtree=buttons.indexOf(t)==7?0:buttons.indexOf(t)+3;
+                            System.out.print("DisplayedSubTreeNumber: "+displayedSubtree);
                     });
             }
 
@@ -351,6 +353,7 @@ public class BracketPane extends BorderPane {
          * @param position The position to clear after
          */
         public void clearSubtree(int position) {
+        	System.out.println("Position: "+position);
                 currentBracket.resetSubtree(position);
         }
 
@@ -419,6 +422,7 @@ public class BracketPane extends BorderPane {
                 nodeMap.put(1, nodeFinal1);
                 nodeMap.put(2, nodeFinal2);
                 nodeMap.put(0, nodeFinal0);
+                //chris
                 if(simulatedBracket!=null)
                 {
                 	//check to see if the final 3 choices match the simulated choices. If they do color them green, if not red
@@ -501,6 +505,7 @@ public class BracketPane extends BorderPane {
                                 nodes.add(last);
                                 getChildren().addAll(new Line(iX, iY, iX + iXO, iY), last);
                                 last.setName(currentBracket.getBracket().get(location));
+                                ///chris
                                 if(sim!=null)
                                 {
                                 	//check to see if the division final choices match thesimulated choices. If they do color them green. If not color them red
@@ -537,9 +542,12 @@ public class BracketPane extends BorderPane {
                                 }
                                 ArrayList<Integer> tmpHelp = helper(location, num);
                              
+                                ///chris
                                 if(sim!=null)
                                 {
+                                	
                                 	//For each created Node, check and see if it matches the simulated bracket's node. If it does color it green. 
+                                	if(tmpHelp.size()!=16)//only color code the non predefined matches
                                 	for(int a=0;a<tmpHelp.size();a++)
                                 	{
                                 		if(currentBracket.getBracket().get(tmpHelp.get(a)).equalsIgnoreCase(sim.getBracket().get(tmpHelp.get(a))))
@@ -599,6 +607,7 @@ public class BracketPane extends BorderPane {
                         return teamName;
                 }
                 //allows you to change the color of the text
+                //chris
                 public void setColor(Color c)
                 {
                 	this.name.setTextFill(c);
