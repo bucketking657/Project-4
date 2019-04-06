@@ -1,3 +1,5 @@
+package marchmadness;
+
 import java.util.ArrayList;
 import java.io.Serializable; 
 
@@ -19,8 +21,18 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
 
+    private boolean isSim=false;//Value that determines whether or not this is a simulated bracket
+    
+    //Default constructor added by Elizabeth 4/1/19
+    public Bracket(){
+        bracket = new ArrayList<String>();
+        playerName = "default";
+        password = "1234";
+
+    }
+    
     //Constructor
-    /**
+    /**Zion Constructo
      *Cosntructor using an ArrayList of strings to start
      * @param starting, and arraylist containing the 64 teams participating in the tournament
      */
@@ -31,18 +43,18 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
-    /**
+    /**Provided Constructor
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
-     */
-    public Bracket(Bracket starting){
+     *
+    **public Bracket(Bracket starting){
         /*bracket = new ArrayList<String>();
         for(int i=0; i<127; i++){
             bracket.add(i,starting.getBracket().get(i));
-        }*/
+        }
         //code above removed and replaced by matt 5/1
         bracket = new ArrayList<String>(starting.getBracket());
-    }
+    }*/
 
     /**
      * added by matt 5/2
