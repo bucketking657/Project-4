@@ -1,8 +1,9 @@
-//package marchmadness;
+package marchmadness;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 
 /**
  *  MarchMadnessGUI
@@ -228,8 +230,17 @@ public class MarchMadnessGUI extends Application {
    private void chooseBracket(){
         //login.setDisable(true);
         btoolBar.setDisable(false);
-        bracketPane=new BracketPane(selectedBracket);
-        displayPane(bracketPane);
+        
+        
+        
+        // if bracketPane has not been initialized,
+        // initialize it here
+        
+        // this might be a temporary fix - we will see
+        // Elizabeth 4/4/19
+        if(bracketPane == null)
+            bracketPane=new BracketPane(selectedBracket);
+        displayPane(new BracketPane(selectedBracket));
 
     }
     /**
@@ -240,8 +251,8 @@ public class MarchMadnessGUI extends Application {
       
       
       bracketPane.clear();
-      bracketPane=new BracketPane(selectedBracket);
-      displayPane(bracketPane);
+      //bracketPane=new BracketPane(selectedBracket);
+      displayPane(new BracketPane(selectedBracket));
         
     }
     
@@ -252,12 +263,13 @@ public class MarchMadnessGUI extends Application {
         if(confirmReset()){
             //horrible hack to reset
             selectedBracket=new Bracket(startingBracket);
-            bracketPane=new BracketPane(selectedBracket);
-            displayPane(bracketPane);
+            //bracketPane=new BracketPane(selectedBracket);
+            displayPane(new BracketPane(selectedBracket));
         }
     }
     
     private void finalizeBracket(){
+        if(bracketPane != null){
        if(bracketPane.isComplete()){
            btoolBar.setDisable(true);
            bracketPane.setDisable(true);
@@ -265,8 +277,10 @@ public class MarchMadnessGUI extends Application {
            login.setDisable(true);
            createdBracket=selectedBracket;//saves your bracket
            //save the bracket along with account info
-           seralizeBracket(selectedBracket);
-            
+          
+            seralizeBracket(selectedBracket);
+           
+           
        }else{
             infoAlert("You can only finalize a bracket once it has been completed.");
             //go back to bracket section selection screen
@@ -274,6 +288,10 @@ public class MarchMadnessGUI extends Application {
             displayPane(bracketPane);
         
        }
+        }
+        else{
+            System.out.println("Null bracket");
+        }
        //bracketPane=new BracketPane(selectedBracket);
       
       
@@ -470,7 +488,7 @@ public class MarchMadnessGUI extends Application {
         alert.setResizable(true);
         alert.getDialogPane().setMinWidth(420);   
         alert.setTitle("Error");
-        alert.setHeaderText("something went wrong");
+        alert.setHeaderText("Something went wrong");
         alert.showAndWait();
         if(fatal){ 
             System.exit(666);
@@ -510,6 +528,7 @@ public class MarchMadnessGUI extends Application {
      * seralizedBracket
      * @param B The bracket the is going to be seralized
      */
+    // need to add finally
     private void seralizeBracket(Bracket B){
         FileOutputStream outStream = null;
         ObjectOutputStream out = null;
@@ -518,13 +537,14 @@ public class MarchMadnessGUI extends Application {
       outStream = new FileOutputStream(B.getPlayerName()+".ser");
       out = new ObjectOutputStream(outStream);
       out.writeObject(B);
-      out.close();
+      
     } 
     catch(IOException e)
     {
       // Grant osborn 5/6 hopefully this never happens 
       showError(new Exception("Error saving bracket \n"+e.getMessage(),e),false);
     }
+
     }
     /**
      * Tayon Watson 5/5
@@ -532,20 +552,30 @@ public class MarchMadnessGUI extends Application {
      * @param filename of the seralized bracket file
      * @return deserialized bracket 
      */
-    private Bracket deseralizeBracket(String filename){
-        Bracket bracket = null;
-        FileInputStream inStream = null;
-        ObjectInputStream in = null;
+    private Bracket deseralizeBracket(String filename) throws FileNotFoundException,
+            IOException{
+        
+        // worked on by Elizabeth 4/1/19
+        
+        // no default constructor for bracket - we fixed
+        Bracket bracket = new Bracket();
+        FileInputStream inStream = new FileInputStream(filename);
+        ObjectInputStream in = new ObjectInputStream(inStream);
+        
     try 
     {
-        inStream = new FileInputStream(filename);
-        in = new ObjectInputStream(inStream);
         bracket = (Bracket) in.readObject();
-        in.close();
-    }catch (IOException | ClassNotFoundException e) {
+        
+        
+    }catch (FileNotFoundException | ClassNotFoundException e) {
       // Grant osborn 5/6 hopefully this never happens either
-      showError(new Exception("Error loading bracket \n"+e.getMessage(),e),false);
+      showError(new Exception("Error loading bracket \n" +e.getMessage(),e),false);
     } 
+    finally{
+        in.close();
+        inStream.close();
+    }
+    // we should really move in.close() into finally block
     return bracket;
     }
     
@@ -564,7 +594,16 @@ public class MarchMadnessGUI extends Application {
             String extension = fileName.substring(fileName.lastIndexOf(".")+1);
        
             if (extension.equals("ser")){
+                try{
                 list.add(deseralizeBracket(fileName));
+                }
+                catch (FileNotFoundException e){
+                    showError(new Exception("File not found \n" +e.getMessage(),e),false);
+                }
+                catch (IOException e){
+                    showError(new Exception("IO Exception \n" +e.getMessage(),e),false);
+                }
+                
             }
         }
         return list;
