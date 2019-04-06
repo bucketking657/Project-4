@@ -487,6 +487,7 @@ public class BracketPane extends BorderPane {
 
                 public Root(int location, Bracket sim) {
                         this.location = location;
+                        this.sim;
                         createVertices(420, 200, 100, 20, 0, 0);
                         createVertices(320, 119, 100, 200, 1, 0);
                         createVertices(220, 60, 100, 100, 2, 200);
