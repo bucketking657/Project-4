@@ -19,8 +19,19 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
     private boolean isSim=false;//Value that determines whether or not this is a simulated bracket
+
+
+    
+    //Default constructor added by Elizabeth 4/1/19
+    public Bracket(){
+        bracket = new ArrayList<String>();
+        playerName = "default";
+        password = "1234";
+    }
+
+
     //Constructor
-    /**
+    /**Zion Constructo
      *Cosntructor using an ArrayList of strings to start
      * @param starting, and arraylist containing the 64 teams participating in the tournament
      */
@@ -31,28 +42,24 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
-    //method: Sets the isSim value to the specified value
-    public void setSim(boolean b)
-    {
-    	isSim=b;
-    }
-    //method: Returns the value of isSim
-    public boolean getSim()
-    {
-    	return isSim;
-    }
-    /**
+
+    /**Provided Constructor
+ ZionMergeTest
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
-     */
-    public Bracket(Bracket starting){
+     *
+    **public Bracket(Bracket starting){
         /*bracket = new ArrayList<String>();
         for(int i=0; i<127; i++){
             bracket.add(i,starting.getBracket().get(i));
-        }*/
+        }
         //code above removed and replaced by matt 5/1
         bracket = new ArrayList<String>(starting.getBracket());
-    }
+}
+    
+   /**
+
+    }*/
 
     /**
      * added by matt 5/2
@@ -64,16 +71,16 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         bracket = new ArrayList<String>(starting.getBracket());
         playerName = user;
     }
-
-    //Methods
+    
+     //Methods
     /**
      * Returns an ArrayList of the bracket
      */
     public ArrayList<String> getBracket(){
         return bracket;
-    }
-
-    /**
+}
+    
+/**
      * Moves a team up the bracket
      * updated by matt 5/7, now removesAbove anytime the above position is not equal to the clicked one
      * @param position, the starting position of the team to be moved
@@ -86,35 +93,40 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             //removeAbove(newPos);
             bracket.set(newPos, bracket.get(position));
         }
+        
         /* removed by matt 5/7
         else {
             removeAbove(newPos);
             bracket.set(newPos, bracket.get(position));
         }*/
-    }
+}
+    
 
-    /**
+    
+/**
      * added by matt 5/1
      * resets all children of root location except for initail teams at final children
      * special behavior if root = 0; just resets the final 4
      * @param root, everything below and including this is reset
      */
     public void resetSubtree(int root){
-    	//System.out.println("Root:"+root);
-    	if(root==3)
-    	{
+
+    	if(root==3){
     		resetFullTree(3);
+
     	}
     	else
-    	if(root==7||root==0)//special case for when clearing the full bracket
+    	
+            if(root==7||root==0)//special case for when clearing the full bracket
     	{
-    		resetFullTree(3);//resets top left bracket
+            resetFullTree(3);//resets top left bracket
     		resetFullTree(4);//resets bottom left bracket
     		resetFullTree(5);//resets top right bracket
     		resetFullTree(6);//resets bottom right bracket
     		resetFullTree(0);//resets the final 4  choices
     	}
     	else
+
         if (root ==0){//special behavior to reset final 4
             for (int i = 0; i < 7; i++) {
                 bracket.set(i,"");
@@ -128,13 +140,47 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
                 resetSubtree(child1);
             }
             if (child2 < 64) {
-                resetSubtree(child2);
-            }
-            if(root<63)
+                resetSubtree(child2);}
+            
+                
+            
+            
             bracket.set(root, "");
         }
     }
-    public void resetFullTree(int root)
+
+    
+    /**
+     * removes all future wins of a team, including spot that this is called from
+     * @param child, index of the first place that the team gets deselected
+     */
+    //public void resetSubtree(int root){
+    public void removeAbove(int child){//renamed by matt 5/1
+        if (child==0)
+            bracket.set(child,"");
+        else {
+            int parent = (int) ((child - 1) / 2);
+            
+           if (bracket.get(parent).equals(bracket.get(child))) {
+                removeAbove(parent);
+            }
+            bracket.set(child, "");
+        }
+    }
+    
+    public void removeAboveCurrent(int child, String name) {	//added by zion 4/3 method to compare parent name to child name, this
+    	 if (child==0)													//allows the program to delete the nodes if parent name  = child name
+             bracket.set(child,"");										//AND if the current position has already been set to ""
+         else {														
+             int parent = (int) ((child - 1) / 2);
+             
+            if (bracket.get(parent).equals(name)) {
+                 removeAboveCurrent(parent,name);
+             }
+             bracket.set(child, "");
+         }
+    }
+     public void resetFullTree(int root)
     {
     	//System.out.println("Num: "+root+" TEAM: "+bracket.get(root));
     	if (root ==0){//special behavior to reset final 4
@@ -157,22 +203,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
-    /**
-     * removes all future wins of a team, including spot that this is called from
-     * @param child, index of the first place that the team gets deselected
-     */
-    //public void resetSubtree(int root){
-    public void removeAbove(int child){//renamed by matt 5/1
-        if (child==0)
-            bracket.set(child,"");
-        else {
-            int parent = (int) ((child - 1) / 2);
-            if (bracket.get(parent).equals(bracket.get(child))) {
-                removeAbove(parent);
-            }
-            bracket.set(child, "");
-        }
-    }
 
     /**
      * add a value to the bracket arrayList
@@ -305,6 +335,17 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      */
     public int getTeamScore(int index){
         return teamScores[index];
+    }
+        //method: Returns the value of isSim
+    public boolean getSim()
+    {
+    	return isSim;
+    }
+            
+    //method: Sets the isSim value to the specified value
+    public void setSim(boolean b)
+    {
+    	isSim=b;
     }
 }
 
