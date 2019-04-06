@@ -3,12 +3,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,8 +49,8 @@ public class ScoreBoardTable {
                 return new SimpleStringProperty(b.getValue().getPlayerName());
             }
         });
-        userNameCol.setSortable(true);
-        userNameCol.setSortType(TableColumn.SortType.DESCENDING); //sorts column from highest to lowest
+        userNameCol.setSortable(false);
+        //userNameCol.setSortType(TableColumn.SortType.DESCENDING); //sorts column from highest to lowest
 
         /**
          * TableColumn totalPtsCol is the column on the right side of the table
@@ -71,33 +68,41 @@ public class ScoreBoardTable {
             }
         });
         totalPtsCol.setSortable(true);
-        
+
+
         totalPtsCol.setSortType(TableColumn.SortType.DESCENDING); //sorts column from highest to lowest
+
+      //  totalPtsCol.setSortType(TableColumn.SortType.ASCENDING); //sorts column from highest to lowest
+
 
         /**
          * TableView table_view is what the user sees in the GUI. This creates the table.
          *
          */
-        
-        
+
+
+
         SortedList<Bracket> sortData = new SortedList<>(data);				//added by zion 4/4 wraps the data
         sortData.comparatorProperty().bind(table.comparatorProperty());		//sortData sorts the data according to columns in the sortOrder list
-        
-        
-        
+
+
+
         table.setItems(sortData);
-        
+
         //table.getSelectionModel().setCellSelectionEnabled(true
         table.sort();
         table.getSortOrder().addAll(totalPtsCol, userNameCol);			//added by zion 4/4 table columns passed in are sorted based on column's sort type IF sortable is true
-        
-        
+
+
         table.getColumns().setAll(userNameCol,totalPtsCol);
+
+
         
+     
     }
 
     public TableView<Bracket> start() {
-                
+
         return table;
     }
 
@@ -112,10 +117,11 @@ public class ScoreBoardTable {
             if (scores.get(name) != null || scores.size() < MAX_PLAYER_NUMBER) {
                 scores.put(name, score);
                 data.add(name);
-                
-                System.out.println("added: " + name.getPlayerName() + " " + score);
+
+
+                //System.out.println("added: " + name.getPlayerName() + " " + score);
             }
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

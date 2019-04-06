@@ -33,7 +33,9 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
 
 
         try{
-            BufferedReader br = new BufferedReader(new FileReader("teamInfo.txt"));
+
+            BufferedReader br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 Test3/src/teamInfo.txt"));
+
 
             while((name = br.readLine()) != null){
             	nickname = br.readLine();
@@ -116,7 +118,9 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
 
 
         try{
-            BufferedReader br = new BufferedReader(new FileReader("initialMatches.txt"));
+
+            BufferedReader br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 Test3/src/initialMatches.txt"));
+
 
             while((name = br.readLine()) != null){
                 starting.add(name);
