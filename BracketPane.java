@@ -30,7 +30,7 @@ import javafx.scene.layout.Region;
  * Created by Richard and Ricardo on 5/3/17.
  */
 public class BracketPane extends BorderPane {
-
+         private Bracket simulatedBracket;
         /**
          * Reference to the graphical representation of the nodes within the bracket.
          */
@@ -180,12 +180,14 @@ public class BracketPane extends BorderPane {
                 ArrayList<GridPane> gridPanes = new ArrayList<>();
 
                 for (int m = 0; m < buttons.size() - 1; m++) {
-                        roots.add(new Root(3 + m,null));
+
+                    roots.add(new Root(3 + m));
+
+
                         panes.put(buttons.get(m), roots.get(m));
                 }
                 Pane finalPane = createFinalFour();
-                //buttons.add(customButton("FINAL"));
-                //panes.put(buttons.get(5), finalPane);
+
                 fullPane = new GridPane();
                 GridPane gp1 = new GridPane();
                 gp1.add(roots.get(0), 0, 0);
@@ -478,9 +480,10 @@ public class BracketPane extends BorderPane {
                 private int location;
                 private Bracket sim;
 
-                public Root(int location,Bracket sim) {
-                	this.sim=sim;
+                public Root(int location, Bracket sim) {
+
                         this.location = location;
+                        this.sim = sim;
                         createVertices(420, 200, 100, 20, 0, 0);
                         createVertices(320, 119, 100, 200, 1, 0);
                         createVertices(220, 60, 100, 100, 2, 200);
@@ -492,6 +495,21 @@ public class BracketPane extends BorderPane {
                                 n.setOnMouseExited(exit);
                         }
                 }
+
+            public Root(int location) {
+                this.location = location;
+
+                createVertices(420, 200, 100, 20, 0, 0);
+                createVertices(320, 119, 100, 200, 1, 0);
+                createVertices(220, 60, 100, 100, 2, 200);
+                createVertices(120, 35, 100, 50, 4, 100);
+                createVertices(20, 25, 100, 25, 8, 50);
+                for (BracketNode n : nodes) {
+                    n.setOnMouseClicked(clicked);
+                    n.setOnMouseEntered(enter);
+                    n.setOnMouseExited(exit);
+                }
+            }
 
                 /**
                  * The secret sauce... well not really,
@@ -618,7 +636,9 @@ public class BracketPane extends BorderPane {
                  */
                 public void setName(String teamName) {
                         this.teamName = teamName;
-                        name.setFont(new Font(10));
+
+                         name.setFont(new Font(10));
+
                         name.setText(teamName);
                 }
         }
