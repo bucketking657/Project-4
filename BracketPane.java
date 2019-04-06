@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -174,12 +175,12 @@ public class BracketPane extends BorderPane {
                 ArrayList<GridPane> gridPanes = new ArrayList<>();
 
                 for (int m = 0; m < buttons.size() - 1; m++) {
-                        roots.add(new Root(3 + m));
+                    roots.add(new Root(3 + m));
+
                         panes.put(buttons.get(m), roots.get(m));
                 }
                 Pane finalPane = createFinalFour();
-                //buttons.add(customButton("FINAL"));
-                //panes.put(buttons.get(5), finalPane);
+
                 fullPane = new GridPane();
                 GridPane gp1 = new GridPane();
                 gp1.add(roots.get(0), 0, 0);
@@ -487,7 +488,7 @@ public class BracketPane extends BorderPane {
 
                 public Root(int location, Bracket sim) {
                         this.location = location;
-                        this.sim;
+                        this.sim = sim;
                         createVertices(420, 200, 100, 20, 0, 0);
                         createVertices(320, 119, 100, 200, 1, 0);
                         createVertices(220, 60, 100, 100, 2, 200);
@@ -499,6 +500,21 @@ public class BracketPane extends BorderPane {
                                 n.setOnMouseExited(exit);
                         }
                 }
+
+            public Root(int location) {
+                this.location = location;
+
+                createVertices(420, 200, 100, 20, 0, 0);
+                createVertices(320, 119, 100, 200, 1, 0);
+                createVertices(220, 60, 100, 100, 2, 200);
+                createVertices(120, 35, 100, 50, 4, 100);
+                createVertices(20, 25, 100, 25, 8, 50);
+                for (BracketNode n : nodes) {
+                    n.setOnMouseClicked(clicked);
+                    n.setOnMouseEntered(enter);
+                    n.setOnMouseExited(exit);
+                }
+            }
 
                 /**
                  * The secret sauce... well not really,

@@ -1,5 +1,3 @@
-package marchmadness;
-
 import java.util.ArrayList;
 import java.io.Serializable; 
 
@@ -42,23 +40,17 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     }
 
 
-    /**Provided Constructor
- ZionMergeTest
-     * Constructor using another Bracket to start
-     * @param starting, master bracket pre-simulation
-     *
-    **public Bracket(Bracket starting){
-        /*bracket = new ArrayList<String>();
-        for(int i=0; i<127; i++){
-            bracket.add(i,starting.getBracket().get(i));
-        }
-        //code above removed and replaced by matt 5/1
-        bracket = new ArrayList<String>(starting.getBracket());
-}
-    
-   /**
 
-    }*/
+ //ZionMergeTest
+      //Constructor using another Bracket to start
+     //* @param starting, master bracket pre-simulation
+  //   *
+        public Bracket(Bracket starting){
+
+            //code above removed and replaced by matt 5/1
+            bracket = new ArrayList<String>(starting.getBracket());
+        }
+
 
     /**
      * added by matt 5/2

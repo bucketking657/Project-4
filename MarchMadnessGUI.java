@@ -1,5 +1,3 @@
-package marchmadness;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -69,7 +67,7 @@ public class MarchMadnessGUI extends Application {
     private Bracket simResultBracket;
     private Bracket createdBracket;//the bracket that you created
 
-    
+
     private ArrayList<Bracket> playerBrackets;
     private HashMap<String, Bracket> playerMap;
 
@@ -270,7 +268,7 @@ public class MarchMadnessGUI extends Application {
     private void reset(){
         if(confirmReset()){
             //horrible hack to reset
-            selectedBracket=new Bracket(startingBracket);
+            selectedBracket=startingBracket;
             //bracketPane=new BracketPane(selectedBracket);
             displayPane(new BracketPane(selectedBracket));
         }
@@ -482,7 +480,7 @@ public class MarchMadnessGUI extends Application {
      * The Exception handler
      * Displays a error message to the user
      * and if the error is bad enough closes the program
-     * @param msg message to be displayed to the user
+
      * @param fatal true if the program should exit. false otherwise 
      */
     private void showError(Exception e,boolean fatal){
@@ -589,7 +587,7 @@ public class MarchMadnessGUI extends Application {
       /**
      * Tayon Watson 5/5
      * deseralizedBracket
-     * @param filename of the seralized bracket file
+
      * @return deserialized bracket 
      */
     private ArrayList<Bracket> loadBrackets()
