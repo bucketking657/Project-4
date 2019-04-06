@@ -29,7 +29,7 @@ import javafx.scene.layout.Region;
  * Created by Richard and Ricardo on 5/3/17.
  */
 public class BracketPane extends BorderPane {
-
+         private Bracket simulatedBracket;
         /**
          * Reference to the graphical representation of the nodes within the bracket.
          */
