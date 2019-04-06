@@ -44,36 +44,16 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
 
 
 
- //ZionMergeTest
-      //Constructor using another Bracket to start
-     //* @param starting, master bracket pre-simulation
-  //   *
-        public Bracket(Bracket starting){
+ /**ZionMergeTest
 
-            //code above removed and replaced by matt 5/1
-            bracket = new ArrayList<String>(starting.getBracket());
-        }
 
-    //method: Sets the isSim value to the specified value
-    public void setSim(boolean b)
-    {
-    	isSim=b;
-    }
-    //method: Returns the value of isSim
-    public boolean getSim()
-    {
-    	return isSim;
-    }
+
     /**
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
      */
     public Bracket(Bracket starting){
-        /*bracket = new ArrayList<String>();
-        for(int i=0; i<127; i++){
-            bracket.add(i,starting.getBracket().get(i));
-        }*/
-        //code above removed and replaced by matt 5/1
+
         bracket = new ArrayList<String>(starting.getBracket());
     }
 

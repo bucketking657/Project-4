@@ -50,7 +50,7 @@ public class BracketPane extends BorderPane {
         /**
          * Reference to the Simulated Bracket
          */
-        private Bracket simulatedBracket;
+
         /**
          * Reference to active subtree within current bracket.
          */

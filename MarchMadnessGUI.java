@@ -54,7 +54,7 @@ public class MarchMadnessGUI extends Application {
     private Button finalizeButton;
     private Button yourBracket;
     private Button randomize;
-    
+
     //allows you to navigate back to division selection screen
     private Button back;
   
@@ -162,7 +162,7 @@ public class MarchMadnessGUI extends Application {
     private void login(){            
         login.setDisable(false);
         simulate.setDisable(true);
-        scoreBoardButton.setDisable(false);
+        scoreBoardButton.setDisable(true);//Chris and Josh
 
   
       
@@ -433,6 +433,7 @@ public class MarchMadnessGUI extends Application {
         //Josh End
 
         Label userName = new Label("User Name: ");
+
         userName.setFont(Font.font("Arial", FontWeight.BOLD,14));//Josh
         loginPane.add(userName, 0, 1);
 
@@ -472,19 +473,32 @@ public class MarchMadnessGUI extends Application {
         Label message = new Label();
         loginPane.add(message, 1, 5);
 
+        //Josh Start
         loginPage.setCenter(loginPane);
         loginPage.setLeft(instructionPane);
         loginPage.setRight(gridRight);
         loginPage.setStyle("-fx-background-color: #6495ED;");
+        //Josh End
 
         signButton.setOnAction(event -> {
+
+
 
             // the name user enter
             String name = enterUser.getText().toLowerCase();//edited by Josh
             // the password user enter
             String playerPass = passwordField.getText();
 
+           // playerMap.put(name,startingBracket);
+
             //Josh Start
+            if(enterUser.getText().equals(""))
+                infoAlert("Please enter a valid user name");
+            else
+                if(passwordField.getText().equals(""))
+                    infoAlert("Please enter a valid password");
+
+
             //Clears text feilds for user security
             enterUser.setText("");
             passwordField.setText("");
@@ -492,17 +506,19 @@ public class MarchMadnessGUI extends Application {
                 directions.setText("");
                 instruction.setDisable(false);
 
-        
-          
-            
+            //Josh End
+
+            System.out.println(playerMap.get(name)==null);
+            System.out.println(playerMap.get(name));
             if (playerMap.get(name) != null) {
                 //check password of user
                  
                 Bracket tmpBracket = this.playerMap.get(name);
-               
+               System.out.println(playerMap.get(name));
                 String password1 = tmpBracket.getPassword();
 
                 if (Objects.equals(password1, playerPass)) {
+
                     // load bracket
                     selectedBracket=playerMap.get(name);
 
@@ -519,6 +535,7 @@ public class MarchMadnessGUI extends Application {
             } else {
                 //check for empty fields
                 if(!name.equals("")&&!playerPass.equals("")){
+
                     //create new bracket
                     Bracket tmpPlayerBracket = new Bracket(startingBracket, name);
                     playerBrackets.add(tmpPlayerBracket);
