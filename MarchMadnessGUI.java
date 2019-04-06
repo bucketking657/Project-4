@@ -1,4 +1,3 @@
-package marchmadness;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,6 +79,7 @@ public class MarchMadnessGUI extends Application {
     private BracketPane bracketPane;
     private GridPane loginP;
     private TournamentInfo teamInfo;
+    private String userName,password;//chris
     
     
     @Override
@@ -91,7 +91,6 @@ public class MarchMadnessGUI extends Application {
             simResultBracket=new Bracket(TournamentInfo.loadStartingBracket());
             simResultBracket.setSim(true);
             createdBracket=new Bracket(TournamentInfo.loadStartingBracket());
-            
         } catch (IOException ex) {
             showError(new Exception("Can't find "+ex.getMessage(),ex),true);
         }
@@ -142,17 +141,23 @@ public class MarchMadnessGUI extends Application {
         //cant login and restart prog after simulate
         login.setDisable(true);
         simulate.setDisable(true);
+        //chris
+        //We wait until the user has chosen to simulate the game before we save the player bracket. 
+        //this is to prevent an error where the score the user gets is always 0
+        Bracket tmpPlayerBracket = new Bracket(startingBracket, userName);
+        playerBrackets.add(tmpPlayerBracket);
+        tmpPlayerBracket.setPassword(password);
         
+        playerMap.put(userName, tmpPlayerBracket);
+        selectedBracket = tmpPlayerBracket;
+        //end update
        scoreBoardButton.setDisable(false);
        viewBracketButton.setDisable(false);
-        yourBracket.setDisable(false);
-       
        teamInfo.simulate(simResultBracket);
+       yourBracket.setDisable(false);
+       //System.out.println(simResultBracket);
        for(Bracket b:playerBrackets){
-    	   
            scoreBoard.addPlayer(b,b.scoreBracket(simResultBracket));
-           
-           
        }
         
         displayPane(table);
@@ -166,9 +171,10 @@ public class MarchMadnessGUI extends Application {
         login.setDisable(false);
         simulate.setDisable(true);
         scoreBoardButton.setDisable(false);
-        viewBracketButton.setDisable(true);
         yourBracket.setDisable(true);
         randomize.setDisable(true);
+        viewBracketButton.setDisable(true);//changed to true. This allows you to view the scoreboard before logging in. 
+        //However, since the brackets havent been simulated yet there are not scores
         btoolBar.setDisable(true);
         displayPane(loginP);
     }
@@ -185,22 +191,20 @@ public class MarchMadnessGUI extends Application {
       * Displays Simulated Bracket
       * 
       */
-
-
-
     //modified by chris
     private void viewBracket()
     {
        //selectedBracket=simResultBracket;
        createdBracket=selectedBracket;//saves your bracket
        bracketPane=new BracketPane(simResultBracket,selectedBracket);
+       bracketPane.setMouseTransparent(true);//only disable the bracketpane, not the scroll bar
        //selectedBracket=simResultBracket;
        //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
        GridPane full =new GridPane();
    	   full.add(new ScrollPane(bracketPane.getFullPane()),0, 0);
    	   full.setAlignment(Pos.CENTER);
    	   //full.setDisable(true);
-   	   full.setMouseTransparent(true);
+   	   //setMouseTransparent(true);//removed this line to prevent the scroll bar from being disabled
    	
    	   displayPane(full); 
     }
@@ -208,7 +212,7 @@ public class MarchMadnessGUI extends Application {
     private void randomSelection()
     {
     	selectedBracket=startingBracket;//reset selected bracket to starting bracket -> fixed an error where a non-new user couldnt use the randomize button
-    	teamInfo.simulate(selectedBracket);
+    	teamInfo.randomize(selectedBracket);
 
     	bracketPane=new BracketPane(selectedBracket);
         //selectedBracket=simResultBracket;
@@ -222,13 +226,13 @@ public class MarchMadnessGUI extends Application {
     private void yourBracket()
     {
     	bracketPane = new BracketPane(createdBracket,simResultBracket);//created bracket is the final version of the bracket you created
+    	//selectedBracket=createdBracket;
+    	bracketPane.setMouseTransparent(true);
     	GridPane full =new GridPane();
     	full.add(new ScrollPane(bracketPane.getFullPane()),0, 0);
     	full.setAlignment(Pos.CENTER);
     	//full.setDisable(true);
-    	full.setMouseTransparent(true);//similar to disapling the button, but it doesnt grey out the pane
     	displayPane(full);
-
     }
     
     /**
@@ -270,9 +274,11 @@ public class MarchMadnessGUI extends Application {
     private void reset(){
         if(confirmReset()){
             //horrible hack to reset
-            selectedBracket=new Bracket(startingBracket);
+            selectedBracket=startingBracket;
+            BracketPane select=new BracketPane(selectedBracket);
+            select.clear();
             //bracketPane=new BracketPane(selectedBracket);
-            displayPane(new BracketPane(selectedBracket));
+            displayPane(select);
         }
     }
     
@@ -282,7 +288,8 @@ public class MarchMadnessGUI extends Application {
            btoolBar.setDisable(true);
            bracketPane.setDisable(true);
            simulate.setDisable(false);
-           login.setDisable(true);											//added by zion 4/3 disables login when user finalizes bracket
+           login.setDisable(true);
+           createdBracket=selectedBracket;//saves your bracket
            //save the bracket along with account info
           
             seralizeBracket(selectedBracket);
@@ -442,24 +449,27 @@ public class MarchMadnessGUI extends Application {
                     // load bracket
                     selectedBracket=playerMap.get(name);
                     chooseBracket();
-                     randomize.setDisable(false);
+                    randomize.setDisable(false);
+                    this.userName=name;
                 }else{
                    infoAlert("The password you have entered is incorrect!");
-                    randomize.setDisable(false);
                 }
 
             } else {
                 //check for empty fields
                 if(!name.equals("")&&!playerPass.equals("")){
                     //create new bracket
-                    Bracket tmpPlayerBracket = new Bracket(startingBracket, name);
-                    playerBrackets.add(tmpPlayerBracket);
-                    tmpPlayerBracket.setPassword(playerPass);
-
-                    playerMap.put(name, tmpPlayerBracket);
-                    selectedBracket = tmpPlayerBracket;
+                    //Bracket tmpPlayerBracket = new Bracket(startingBracket, name);
+                    //playerBrackets.add(tmpPlayerBracket);
+                    //tmpPlayerBracket.setPassword(playerPass);
+                    
+                    //playerMap.put(name, tmpPlayerBracket);
+                    selectedBracket = startingBracket;
+                    this.userName=name;
+                    this.password=playerPass;
                     //alert user that an account has been created
                     infoAlert("No user with the Username \""  + name + "\" exists. A new account has been created.");
+                    randomize.setDisable(false);
                     chooseBracket();
                 }
             }
