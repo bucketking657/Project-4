@@ -8,26 +8,24 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Scanner;
+
+import com.sun.javafx.font.FontStrike;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class MarchMadnessGUI extends Application {
     private ScoreBoardTable scoreBoard;
     private TableView table;
     private BracketPane bracketPane;
-    private GridPane loginP;
+    private BorderPane loginP;//edited by josh
     private TournamentInfo teamInfo;
     
     
@@ -89,7 +87,7 @@ public class MarchMadnessGUI extends Application {
             simResultBracket=new Bracket(TournamentInfo.loadStartingBracket());
             simResultBracket.setSim(true);
             createdBracket=new Bracket(TournamentInfo.loadStartingBracket());
-            
+
         } catch (IOException ex) {
             showError(new Exception("Can't find "+ex.getMessage(),ex),true);
         }
@@ -143,14 +141,15 @@ public class MarchMadnessGUI extends Application {
         
        scoreBoardButton.setDisable(false);
        viewBracketButton.setDisable(false);
+
         yourBracket.setDisable(false);
        
+
+
        teamInfo.simulate(simResultBracket);
+       yourBracket.setDisable(false);
        for(Bracket b:playerBrackets){
-    	   
            scoreBoard.addPlayer(b,b.scoreBracket(simResultBracket));
-           
-           
        }
         
         displayPane(table);
@@ -164,9 +163,15 @@ public class MarchMadnessGUI extends Application {
         login.setDisable(false);
         simulate.setDisable(true);
         scoreBoardButton.setDisable(false);
-        viewBracketButton.setDisable(true);
+
+  
+      
+
         yourBracket.setDisable(true);
         randomize.setDisable(true);
+        viewBracketButton.setDisable(true);//changed to true. This allows you to view the scoreboard before logging in. 
+        //However, since the brackets havent been simulated yet there are not scores
+
         btoolBar.setDisable(true);
         displayPane(loginP);
     }
@@ -183,8 +188,6 @@ public class MarchMadnessGUI extends Application {
       * Displays Simulated Bracket
       * 
       */
-
-
 
     //modified by chris
     private void viewBracket()
@@ -226,7 +229,6 @@ public class MarchMadnessGUI extends Application {
     	//full.setDisable(true);
     	full.setMouseTransparent(true);//similar to disapling the button, but it doesnt grey out the pane
     	displayPane(full);
-
     }
     
     /**
@@ -257,8 +259,8 @@ public class MarchMadnessGUI extends Application {
       
       
       bracketPane.clear();
-      //bracketPane=new BracketPane(selectedBracket);
-      displayPane(new BracketPane(selectedBracket));
+      bracketPane=new BracketPane(selectedBracket);
+      displayPane(bracketPane);
         
     }
     
@@ -280,7 +282,8 @@ public class MarchMadnessGUI extends Application {
            btoolBar.setDisable(true);
            bracketPane.setDisable(true);
            simulate.setDisable(false);
-           login.setDisable(true);											//added by zion 4/3 disables login when user finalizes bracket
+           login.setDisable(true);
+           createdBracket=selectedBracket;//saves your bracket
            //save the bracket along with account info
           
             seralizeBracket(selectedBracket);
@@ -383,13 +386,19 @@ public class MarchMadnessGUI extends Application {
     }
     
     
-    private GridPane createLogin(){
+    private BorderPane createLogin(){ //edited by josh
         
         
         /*
         LoginPane
         Sergio and Joao
          */
+        //Josh start
+        BorderPane loginPage = new BorderPane();
+        VBox instructionPane = new VBox();
+        VBox gridRight = new VBox();
+        instructionPane.setSpacing(10);
+        //Josh End
 
         GridPane loginPane = new GridPane();
         loginPane.setAlignment(Pos.CENTER);
@@ -397,34 +406,91 @@ public class MarchMadnessGUI extends Application {
         loginPane.setVgap(10);
         loginPane.setPadding(new Insets(5, 5, 5, 5));
 
-        Text welcomeMessage = new Text("March Madness Login Welcome");
-        loginPane.add(welcomeMessage, 0, 0, 2, 1);
+
+        TextArea directions= new TextArea();//Josh
+
+        //Josh Start
+        //Right panel
+        Image image = new Image(new File("/home/jshilts/IdeaProjects/Project 4 v2/src/march2").toURI().toString());
+        ImageView i = new ImageView();
+        i.setImage(image);
+        i.setFitHeight(500);
+        i.setFitWidth(350);
+        gridRight.setPadding(new Insets(35,80,10,10));
+        gridRight.getChildren().addAll(i);
+
+        //Top
+        //Style Title
+        Text welcomeMessage = new Text("March Madness Login");
+        DropShadow ds = new DropShadow();
+        ds.setOffsetY(3.0f);
+        ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
+        welcomeMessage.setEffect(ds);
+        welcomeMessage.setCache(true);
+        welcomeMessage.setFont(Font.font("Arial", FontWeight.BOLD,32));
+        loginPage.setAlignment(welcomeMessage,Pos.TOP_CENTER);
+        loginPage.setTop(welcomeMessage);
+        //Josh End
 
         Label userName = new Label("User Name: ");
+        userName.setFont(Font.font("Arial", FontWeight.BOLD,14));//Josh
         loginPane.add(userName, 0, 1);
 
         TextField enterUser = new TextField();
         loginPane.add(enterUser, 1, 1);
 
+
         Label password = new Label("Password: ");
+        password.setFont(Font.font("Arial", FontWeight.BOLD,14));//Josh
         loginPane.add(password, 0, 2);
 
         PasswordField passwordField = new PasswordField();
         loginPane.add(passwordField, 1, 2);
 
+        //Josh start
+        //Left
+        Button instruction = new Button("Instruction");
+
+        instruction.setFont(Font.font("Arial", FontWeight.BOLD,14));
+        instruction.setStyle("-fx-base: ADD8E6 ;");
+        instructionPane.setPadding(new Insets(10,0,10,65));
+        instructionPane.setAlignment(Pos.CENTER);
+        instructionPane.setStyle("-fx-background-color: #6495ED;");
+        directions.setPrefSize(250,400);
+
+        instructionPane.getChildren().addAll(instruction,directions);
+        directions.setWrapText(true);
+        directions.setEditable(false);
+
+        //Josh end
+
         Button signButton = new Button("Sign in");
+        signButton.setFont(Font.font("Arial", FontWeight.BOLD,14));//Josh
         loginPane.add(signButton, 1, 4);
         signButton.setDefaultButton(true);//added by matt 5/7, lets you use sign in button by pressing enter
 
         Label message = new Label();
         loginPane.add(message, 1, 5);
 
+        loginPage.setCenter(loginPane);
+        loginPage.setLeft(instructionPane);
+        loginPage.setRight(gridRight);
+        loginPage.setStyle("-fx-background-color: #6495ED;");
+
         signButton.setOnAction(event -> {
 
             // the name user enter
-            String name = enterUser.getText();
+            String name = enterUser.getText().toLowerCase();//edited by Josh
             // the password user enter
             String playerPass = passwordField.getText();
+
+            //Josh Start
+            //Clears text feilds for user security
+            enterUser.setText("");
+            passwordField.setText("");
+            if(directions!=null)
+                directions.setText("");
+                instruction.setDisable(false);
 
         
           
@@ -439,8 +505,12 @@ public class MarchMadnessGUI extends Application {
                 if (Objects.equals(password1, playerPass)) {
                     // load bracket
                     selectedBracket=playerMap.get(name);
+
                     chooseBracket();
-                     randomize.setDisable(false);
+
+
+                    randomize.setDisable(false);
+
                 }else{
                    infoAlert("The password you have entered is incorrect!");
                     randomize.setDisable(false);
@@ -458,12 +528,36 @@ public class MarchMadnessGUI extends Application {
                     selectedBracket = tmpPlayerBracket;
                     //alert user that an account has been created
                     infoAlert("No user with the Username \""  + name + "\" exists. A new account has been created.");
+                    randomize.setDisable(false);
                     chooseBracket();
                 }
             }
         });
+
+        //Josh Start
+        instruction.setOnAction(event -> {
+
+            try {
+                Scanner scan = new Scanner(new File("/home/jshilts/IdeaProjects/Project 4 v2/src/Instructions"));
+                int x = 0;
+                while (scan.hasNext() ) {
+
+                    directions.appendText(" " + scan.next());
+                    directions.setFont(Font.font("Arial", FontPosture.ITALIC,14));//Josh
+                  //  t.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+
+                }
+                instruction.setDisable(true);
+                scan.close();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        });
+        //Josh End
         
-        return loginPane;
+        return loginPage;
     }
     
     /**
@@ -480,7 +574,7 @@ public class MarchMadnessGUI extends Application {
      * The Exception handler
      * Displays a error message to the user
      * and if the error is bad enough closes the program
-
+     *
      * @param fatal true if the program should exit. false otherwise 
      */
     private void showError(Exception e,boolean fatal){
@@ -587,7 +681,7 @@ public class MarchMadnessGUI extends Application {
       /**
      * Tayon Watson 5/5
      * deseralizedBracket
-
+     *
      * @return deserialized bracket 
      */
     private ArrayList<Bracket> loadBrackets()

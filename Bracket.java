@@ -19,6 +19,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
     private boolean isSim=false;//Value that determines whether or not this is a simulated bracket
+
     
     //Default constructor added by Elizabeth 4/1/19
     public Bracket(){
@@ -26,6 +27,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         playerName = "default";
         password = "1234";
     }
+
 
     //Constructor
     /**Zion Constructo
@@ -41,6 +43,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
 
 
 
+
  //ZionMergeTest
       //Constructor using another Bracket to start
      //* @param starting, master bracket pre-simulation
@@ -50,6 +53,29 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             //code above removed and replaced by matt 5/1
             bracket = new ArrayList<String>(starting.getBracket());
         }
+
+    //method: Sets the isSim value to the specified value
+    public void setSim(boolean b)
+    {
+    	isSim=b;
+    }
+    //method: Returns the value of isSim
+    public boolean getSim()
+    {
+    	return isSim;
+    }
+    /**
+     * Constructor using another Bracket to start
+     * @param starting, master bracket pre-simulation
+     */
+    public Bracket(Bracket starting){
+        /*bracket = new ArrayList<String>();
+        for(int i=0; i<127; i++){
+            bracket.add(i,starting.getBracket().get(i));
+        }*/
+        //code above removed and replaced by matt 5/1
+        bracket = new ArrayList<String>(starting.getBracket());
+    }
 
 
     /**
@@ -102,7 +128,10 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      */
     public void resetSubtree(int root){
 
-    	if(root==3){
+    	//System.out.println("Root:"+root);
+    	if(root==3)
+    	{
+
     		resetFullTree(3);
 
     	}
@@ -117,7 +146,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     		resetFullTree(0);//resets the final 4  choices
     	}
     	else
-
         if (root ==0){//special behavior to reset final 4
             for (int i = 0; i < 7; i++) {
                 bracket.set(i,"");
@@ -131,33 +159,31 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
                 resetSubtree(child1);
             }
             if (child2 < 64) {
-                resetSubtree(child2);}
-            
-                
-            
-            
-            bracket.set(root, "");
+
+                resetSubtree(child2);
+            }
+           
         }
     }
+  
 
     
     /**
      * removes all future wins of a team, including spot that this is called from
      * @param child, index of the first place that the team gets deselected
      */
-    //public void resetSubtree(int root){
     public void removeAbove(int child){//renamed by matt 5/1
         if (child==0)
             bracket.set(child,"");
         else {
             int parent = (int) ((child - 1) / 2);
-            
-           if (bracket.get(parent).equals(bracket.get(child))) {
+            if (bracket.get(parent).equals(bracket.get(child))) {
                 removeAbove(parent);
             }
             bracket.set(child, "");
         }
     }
+
     
     public void removeAboveCurrent(int child, String name) {	//added by zion 4/3 method to compare parent name to child name, this
     	 if (child==0)													//allows the program to delete the nodes if parent name  = child name
@@ -193,6 +219,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             bracket.set(root, "");
         }
     }
+
 
 
     /**
