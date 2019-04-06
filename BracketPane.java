@@ -16,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -30,7 +29,7 @@ import javafx.scene.layout.Region;
  * Created by Richard and Ricardo on 5/3/17.
  */
 public class BracketPane extends BorderPane {
-
+         private Bracket simulatedBracket;
         /**
          * Reference to the graphical representation of the nodes within the bracket.
          */
@@ -47,10 +46,6 @@ public class BracketPane extends BorderPane {
          * Reference to the current bracket.
          */
         private Bracket currentBracket;
-        /**
-         * Reference to the Simulated Bracket
-         */
-        private Bracket simulatedBracket;
         /**
          * Reference to active subtree within current bracket.
          */
@@ -81,10 +76,11 @@ public class BracketPane extends BorderPane {
                         clearAbove(nextTreeNum);
                 }
         }
-        
+       
         
         public void clear(){
             clearSubtree(displayedSubtree);
+            
         }
 
         /**
@@ -94,7 +90,6 @@ public class BracketPane extends BorderPane {
                 //conditional added by matt 5/7 to differentiate between left and right mouse click
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                         BracketNode n = (BracketNode) mouseEvent.getSource();
-                       // System.out.println("NUM: "+bracketMap.get(n));
                         int treeNum = bracketMap.get(n);
                         int nextTreeNum = (treeNum - 1) / 2;
                         if (!nodeMap.get(nextTreeNum).getName().equals(n.getName())) {
@@ -160,7 +155,6 @@ public class BracketPane extends BorderPane {
         public BracketPane(Bracket currentBracket) {
                 displayedSubtree=0;
                 this.currentBracket = currentBracket;
-                this.simulatedBracket=null;
 
                 bracketMap = new HashMap<>();
                 nodeMap = new HashMap<>();
@@ -180,7 +174,7 @@ public class BracketPane extends BorderPane {
                 ArrayList<GridPane> gridPanes = new ArrayList<>();
 
                 for (int m = 0; m < buttons.size() - 1; m++) {
-                        roots.add(new Root(3 + m,null));
+                        roots.add(new Root(3 + m));
                         panes.put(buttons.get(m), roots.get(m));
                 }
                 Pane finalPane = createFinalFour();
@@ -236,6 +230,8 @@ public class BracketPane extends BorderPane {
                 }
 
         }
+
+
         
         //Constructor: 
         //Allows you to define a BracketPane with a specified simulated Bracket
@@ -319,6 +315,7 @@ public class BracketPane extends BorderPane {
 
     }
 
+
         /**
          * Helpful method to retrieve our magical numbers
          *
@@ -353,8 +350,15 @@ public class BracketPane extends BorderPane {
          * @param position The position to clear after
          */
         public void clearSubtree(int position) {
+
+        	String currentName = nodeMap.get(position).getName();		//added by zion 4/3, stores current name to currentName before erasing
+        	currentBracket.resetSubtree(position);
+        	currentBracket.removeAboveCurrent(position,currentName);	//added by zion 4/3, removes parent name if currentName equals parent name  */
+                
+
         	//System.out.println("Position: "+position);
                 currentBracket.resetSubtree(position);
+
         }
 
         /**
@@ -422,6 +426,8 @@ public class BracketPane extends BorderPane {
                 nodeMap.put(1, nodeFinal1);
                 nodeMap.put(2, nodeFinal2);
                 nodeMap.put(0, nodeFinal0);
+
+
                 //chris
                 if(simulatedBracket!=null)
                 {
@@ -449,6 +455,7 @@ public class BracketPane extends BorderPane {
                 	else
                 		nodeFinal2.setColor(Color.RED);
                 }
+
 
                 nodeFinal0.setOnMouseClicked(clicked);
                 nodeFinal0.setOnMouseDragEntered(enter);
@@ -478,9 +485,9 @@ public class BracketPane extends BorderPane {
                 private int location;
                 private Bracket sim;
 
-                public Root(int location,Bracket sim) {
-                	this.sim=sim;
+                public Root(int location, Bracket sim) {
                         this.location = location;
+                        this.sim;
                         createVertices(420, 200, 100, 20, 0, 0);
                         createVertices(320, 119, 100, 200, 1, 0);
                         createVertices(220, 60, 100, 100, 2, 200);
@@ -505,6 +512,7 @@ public class BracketPane extends BorderPane {
                                 nodes.add(last);
                                 getChildren().addAll(new Line(iX, iY, iX + iXO, iY), last);
                                 last.setName(currentBracket.getBracket().get(location));
+
                                 ///chris
                                 if(sim!=null)
                                 {
@@ -518,6 +526,7 @@ public class BracketPane extends BorderPane {
                                 		last.setColor(Color.RED);
                                 	}
                                 }
+
                                 bracketMap.put(last, location);
                                 nodeMap.put(location, last);
                         } else {
@@ -530,7 +539,7 @@ public class BracketPane extends BorderPane {
                                         BracketNode nTop = new BracketNode("", iX, y - 20, iXO, 20);
                                         aNodeList.add(nTop);
                                         nodes.add(nTop);
-                                        BracketNode nBottom = new BracketNode("", iX, y+(iYO - 20), iXO, 20);
+                                        BracketNode nBottom = new BracketNode("", iX, y + (iYO - 20), iXO, 20);
                                         aNodeList.add(nBottom);
                                         nodes.add(nBottom);
                                         Line top = new Line(tl.getX(), tl.getY(), tr.getX(), tr.getY());
@@ -541,6 +550,7 @@ public class BracketPane extends BorderPane {
                                         y += increment;
                                 }
                                 ArrayList<Integer> tmpHelp = helper(location, num);
+
                              
                                 ///chris
                                 if(sim!=null)
@@ -558,13 +568,14 @@ public class BracketPane extends BorderPane {
                                 			aNodeList.get(a).setColor(Color.RED);
                                 	}
                                 }
+
                                 for (int j = 0; j < aNodeList.size(); j++) {
+                                        //System.out.println(currentBracket.getBracket().get(tmpHelp.get(j)));
                                         aNodeList.get(j).setName(currentBracket.getBracket().get(tmpHelp.get(j)));
                                         bracketMap.put(aNodeList.get(j), tmpHelp.get(j));
                                         nodeMap.put(tmpHelp.get(j), aNodeList.get(j));
-                                        
+                                        //System.out.println(bracketMap.get(aNodeList.get(j)));
                                 }
-                               
                         }
 
                 }
@@ -606,6 +617,7 @@ public class BracketPane extends BorderPane {
                 public String getName() {
                         return teamName;
                 }
+
                 //allows you to change the color of the text
                 //chris
                 public void setColor(Color c)
@@ -613,12 +625,13 @@ public class BracketPane extends BorderPane {
                 	this.name.setTextFill(c);
                 }
 
+
                 /**
                  * @param teamName The name to assign to the node.
                  */
                 public void setName(String teamName) {
                         this.teamName = teamName;
-                        name.setFont(new Font(10));
+                         name.setFont(new Font(10));
                         name.setText(teamName);
                 }
         }
