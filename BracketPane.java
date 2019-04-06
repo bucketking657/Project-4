@@ -483,7 +483,7 @@ public class BracketPane extends BorderPane {
         private class Root extends Pane {
 
                 private int location;
-                private Bracket sim
+                private Bracket sim;
 
                 public Root(int location, Bracket sim) {
                         this.location = location;
