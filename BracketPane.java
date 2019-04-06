@@ -483,6 +483,7 @@ public class BracketPane extends BorderPane {
         private class Root extends Pane {
 
                 private int location;
+                private Bracket sim
 
                 public Root(int location) {
                         this.location = location;
@@ -629,6 +630,7 @@ public class BracketPane extends BorderPane {
                  */
                 public void setName(String teamName) {
                         this.teamName = teamName;
+                         name.setFont(new Font(10));
                         name.setText(teamName);
                 }
         }
