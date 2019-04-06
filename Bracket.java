@@ -118,8 +118,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     	
             if(root==7||root==0)//special case for when clearing the full bracket
     	{
-
-    		resetFullTree(3);//resets top left bracket
+            resetFullTree(3);//resets top left bracket
     		resetFullTree(4);//resets bottom left bracket
     		resetFullTree(5);//resets top right bracket
     		resetFullTree(6);//resets bottom right bracket
@@ -140,8 +139,10 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
                 resetSubtree(child1);
             }
             if (child2 < 64) {
-                resetSubtree(child2);
-            }
+                resetSubtree(child2);}
+            
+                
+            
             
             bracket.set(root, "");
         }
