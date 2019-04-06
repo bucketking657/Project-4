@@ -27,10 +27,10 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         bracket = new ArrayList<String>();
         playerName = "default";
         password = "1234";
-
     }
+<
     //Constructor
-    /**
+    /**Zion Constructo
      *Cosntructor using an ArrayList of strings to start
      * @param starting, and arraylist containing the 64 teams participating in the tournament
      */
@@ -41,20 +41,28 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
-    /**
+
+    /**Provided Constructor
+ ZionMergeTest
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
-     */
-    public Bracket(Bracket starting){
+     *
+    **public Bracket(Bracket starting){
         /*bracket = new ArrayList<String>();
         for(int i=0; i<127; i++){
             bracket.add(i,starting.getBracket().get(i));
-        }*/
+        }
         //code above removed and replaced by matt 5/1
         bracket = new ArrayList<String>(starting.getBracket());
+bucketking657-patch-1
     }
     
    /**
+
+    }*/
+
+    /**
+ ZionMergeTest
      * added by matt 5/2
      * Constructor that creates a new bracket with a users name
      * @param starting, master bracket pre-simulation
@@ -102,15 +110,16 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      * @param root, everything below and including this is reset
      */
     public void resetSubtree(int root){
-    	//System.out.println("Root:"+root);
-    	if(root==3)
-    	{
+
+    	if(root==3){
     		resetFullTree(3);
+
     	}
     	else
     	
             if(root==7||root==0)//special case for when clearing the full bracket
     	{
+
     		resetFullTree(3);//resets top left bracket
     		resetFullTree(4);//resets bottom left bracket
     		resetFullTree(5);//resets top right bracket
@@ -118,6 +127,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     		resetFullTree(0);//resets the final 4  choices
     	}
     	else
+
         if (root ==0){//special behavior to reset final 4
             for (int i = 0; i < 7; i++) {
                 bracket.set(i,"");
@@ -133,29 +143,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             if (child2 < 64) {
                 resetSubtree(child2);
             }
-            if(root<63)
-            bracket.set(root, "");
-        }
-    }
-    public void resetFullTree(int root)
-    {
-    	//System.out.println("Num: "+root+" TEAM: "+bracket.get(root));
-    	if (root ==0){//special behavior to reset final 4
-            for (int i = 0; i < 7; i++) {
-                bracket.set(i,"");
-            }
-        }
-        else {
-            int child1 = 2 * root + 1;
-            int child2 = 2 * root + 2;
-
-            if (child1 < 64) {//child is above round 1
-                resetFullTree(child1);
-            }
-            if (child2 < 64) {
-                resetFullTree(child2);
-            }
-            if(root<63)
             bracket.set(root, "");
         }
     }
@@ -170,11 +157,25 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             bracket.set(child,"");
         else {
             int parent = (int) ((child - 1) / 2);
-            if (bracket.get(parent).equals(bracket.get(child))) {
+            
+           if (bracket.get(parent).equals(bracket.get(child))) {
                 removeAbove(parent);
             }
             bracket.set(child, "");
         }
+    }
+    
+    public void removeAboveCurrent(int child, String name) {	//added by zion 4/3 method to compare parent name to child name, this
+    	 if (child==0)													//allows the program to delete the nodes if parent name  = child name
+             bracket.set(child,"");										//AND if the current position has already been set to ""
+         else {														
+             int parent = (int) ((child - 1) / 2);
+             
+            if (bracket.get(parent).equals(name)) {
+                 removeAboveCurrent(parent,name);
+             }
+             bracket.set(child, "");
+         }
     }
 
     /**
