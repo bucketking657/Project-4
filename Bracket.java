@@ -28,7 +28,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         playerName = "default";
         password = "1234";
     }
-<
+
     //Constructor
     /**Zion Constructo
      *Cosntructor using an ArrayList of strings to start
@@ -102,10 +102,7 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     
 
     
-    
-    
-    
-    /**
+/**
      * added by matt 5/1
      * resets all children of root location except for initail teams at final children
      * special behavior if root = 0; just resets the final 4
