@@ -29,8 +29,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         password = "1234";
 
     }
-    
-
     //Constructor
     /**
      *Cosntructor using an ArrayList of strings to start
@@ -43,16 +41,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
     }
 
-    //method: Sets the isSim value to the specified value
-    public void setSim(boolean b)
-    {
-    	isSim=b;
-    }
-    //method: Returns the value of isSim
-    public boolean getSim()
-    {
-    	return isSim;
-    }
     /**
      * Constructor using another Bracket to start
      * @param starting, master bracket pre-simulation
@@ -65,8 +53,8 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         //code above removed and replaced by matt 5/1
         bracket = new ArrayList<String>(starting.getBracket());
     }
-
-    /**
+    
+   /**
      * added by matt 5/2
      * Constructor that creates a new bracket with a users name
      * @param starting, master bracket pre-simulation
@@ -76,16 +64,16 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         bracket = new ArrayList<String>(starting.getBracket());
         playerName = user;
     }
-
-    //Methods
+    
+     //Methods
     /**
      * Returns an ArrayList of the bracket
      */
     public ArrayList<String> getBracket(){
         return bracket;
-    }
-
-    /**
+}
+    
+/**
      * Moves a team up the bracket
      * updated by matt 5/7, now removesAbove anytime the above position is not equal to the clicked one
      * @param position, the starting position of the team to be moved
@@ -98,12 +86,14 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             //removeAbove(newPos);
             bracket.set(newPos, bracket.get(position));
         }
+        
         /* removed by matt 5/7
         else {
             removeAbove(newPos);
             bracket.set(newPos, bracket.get(position));
         }*/
-    }
+}
+    
 
     /**
      * added by matt 5/1
@@ -118,7 +108,8 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     		resetFullTree(3);
     	}
     	else
-    	if(root==7||root==0)//special case for when clearing the full bracket
+    	
+            if(root==7||root==0)//special case for when clearing the full bracket
     	{
     		resetFullTree(3);//resets top left bracket
     		resetFullTree(4);//resets bottom left bracket
@@ -317,6 +308,17 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      */
     public int getTeamScore(int index){
         return teamScores[index];
+    }
+        //method: Returns the value of isSim
+    public boolean getSim()
+    {
+    	return isSim;
+    }
+            
+    //method: Sets the isSim value to the specified value
+    public void setSim(boolean b)
+    {
+    	isSim=b;
     }
 }
 
