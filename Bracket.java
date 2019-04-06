@@ -142,10 +142,12 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
             if (child2 < 64) {
                 resetSubtree(child2);
             }
+            
             bracket.set(root, "");
         }
     }
 
+    
     /**
      * removes all future wins of a team, including spot that this is called from
      * @param child, index of the first place that the team gets deselected
