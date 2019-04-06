@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -174,7 +175,7 @@ public class BracketPane extends BorderPane {
                 ArrayList<GridPane> gridPanes = new ArrayList<>();
 
                 for (int m = 0; m < buttons.size() - 1; m++) {
-                        roots.add(new Root(3 + m));
+                        roots.add(new Root(3 + m,null));
                         panes.put(buttons.get(m), roots.get(m));
                 }
                 Pane finalPane = createFinalFour();
@@ -487,7 +488,7 @@ public class BracketPane extends BorderPane {
 
                 public Root(int location, Bracket sim) {
                         this.location = location;
-                        this.sim;
+                        this.sim=sim;
                         createVertices(420, 200, 100, 20, 0, 0);
                         createVertices(320, 119, 100, 200, 1, 0);
                         createVertices(220, 60, 100, 100, 2, 200);

@@ -69,6 +69,35 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         return teams.get(teamName);
     }
 
+    public void randomize(Bracket startingBracket)
+    {
+    	for (int i = 62; i >= 0; i--) {
+            /* The equation for score that I settled on is this:
+             * (Random int 75-135) * (1 - 0.02 * seed ranking)
+             * This way, the multiplier would be between 0.68 and 0.98. Multiply that by 75-135, and you get a reasonable score with room for chance to prevail for lower teams. */
+
+                int index1 = 2*i+1;
+                int index2 = 2*i+2;
+
+                Team team1 = teams.get(startingBracket.getBracket().get(index1));
+                Team team2 = teams.get(startingBracket.getBracket().get(index2));
+
+                int score1 = 0;
+                int score2 = 0;
+                while(score1==score2) {
+                    score1 = (int) (((Math.random() * 136) + 75) * (1 - (team1.getRanking() * 0.02)));
+                    score2 = (int) (((Math.random() * 136) + 75) * (1 - (team2.getRanking() * 0.02)));
+                }
+
+                //startingBracket.setTeamScore(index1, score1);
+               // startingBracket.setTeamScore(index2, score2);
+
+                if(score1>score2)
+                    startingBracket.moveTeamUp(index1);
+                else
+                    startingBracket.moveTeamUp(index2);
+            }
+    }
     /**
      * This will be the method that actually does the work of determining the outcome of the games.
      * It will use the seed/ranking from each team on the bracket and put it into an algorithm to somewhat randomly generate a winner
