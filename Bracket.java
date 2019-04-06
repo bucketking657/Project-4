@@ -20,7 +20,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
     static final int MIDWEST_BRACKET = 5;
     static final int SOUTH_BRACKET = 6;
     public static final long serialVersionUID = 5609181678399742983L;
-
     private boolean isSim=false;//Value that determines whether or not this is a simulated bracket
     
     //Default constructor added by Elizabeth 4/1/19
@@ -28,7 +27,6 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         bracket = new ArrayList<String>();
         playerName = "default";
         password = "1234";
-
     }
     
     //Constructor
@@ -103,15 +101,11 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
      */
     public void resetSubtree(int root){
 
-
-    	//System.out.println("Root:"+root);
-    	if(root==3)
-    	{
+    	if(root==3){
     		resetFullTree(3);
-    	}
-    	else
-    	if(root==7||root==0)//special case for when clearing the full bracket
-    	{
+    	}else
+    	    if(root==7||root==0){//special case for when clearing the full bracket
+    	
     		resetFullTree(3);//resets top left bracket
     		resetFullTree(4);//resets bottom left bracket
     		resetFullTree(5);//resets top right bracket
