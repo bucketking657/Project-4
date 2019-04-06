@@ -54,15 +54,13 @@ public class Bracket implements Serializable //Hillary: This bracket class is to
         }
         //code above removed and replaced by matt 5/1
         bracket = new ArrayList<String>(starting.getBracket());
-bucketking657-patch-1
-    }
+}
     
    /**
 
     }*/
 
     /**
- ZionMergeTest
      * added by matt 5/2
      * Constructor that creates a new bracket with a users name
      * @param starting, master bracket pre-simulation
@@ -103,6 +101,10 @@ bucketking657-patch-1
 }
     
 
+    
+    
+    
+    
     /**
      * added by matt 5/1
      * resets all children of root location except for initail teams at final children
@@ -177,6 +179,29 @@ bucketking657-patch-1
              bracket.set(child, "");
          }
     }
+     public void resetFullTree(int root)
+    {
+    	//System.out.println("Num: "+root+" TEAM: "+bracket.get(root));
+    	if (root ==0){//special behavior to reset final 4
+            for (int i = 0; i < 7; i++) {
+                bracket.set(i,"");
+            }
+        }
+        else {
+            int child1 = 2 * root + 1;
+            int child2 = 2 * root + 2;
+
+            if (child1 < 64) {//child is above round 1
+                resetFullTree(child1);
+            }
+            if (child2 < 64) {
+                resetFullTree(child2);
+            }
+            if(root<63)
+            bracket.set(root, "");
+        }
+    }
+
 
     /**
      * add a value to the bracket arrayList
