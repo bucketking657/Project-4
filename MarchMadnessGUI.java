@@ -56,6 +56,8 @@ public class MarchMadnessGUI extends Application {
     private Button clearButton;
     private Button resetButton;
     private Button finalizeButton;
+    private Button yourBracket;
+    private Button randomize;
     
     //allows you to navigate back to division selection screen
     private Button back;
@@ -65,6 +67,7 @@ public class MarchMadnessGUI extends Application {
     //reference to currently logged in bracket
     private Bracket selectedBracket;
     private Bracket simResultBracket;
+    private Bracket createdBracket;//the bracket that you created
 
     
     private ArrayList<Bracket> playerBrackets;
@@ -86,6 +89,9 @@ public class MarchMadnessGUI extends Application {
             teamInfo=new TournamentInfo();
             startingBracket= new Bracket(TournamentInfo.loadStartingBracket());
             simResultBracket=new Bracket(TournamentInfo.loadStartingBracket());
+            simResultBracket.setSim(true);
+            createdBracket=new Bracket(TournamentInfo.loadStartingBracket());
+            
         } catch (IOException ex) {
             showError(new Exception("Can't find "+ex.getMessage(),ex),true);
         }
@@ -139,6 +145,7 @@ public class MarchMadnessGUI extends Application {
         
        scoreBoardButton.setDisable(false);
        viewBracketButton.setDisable(false);
+        yourBracket.setDisable(false);
        
        teamInfo.simulate(simResultBracket);
        for(Bracket b:playerBrackets){
@@ -156,10 +163,12 @@ public class MarchMadnessGUI extends Application {
      * 
      */
     private void login(){            
-        login.setDisable(true);
+        login.setDisable(false);
         simulate.setDisable(true);
-        scoreBoardButton.setDisable(true);
+        scoreBoardButton.setDisable(false);
         viewBracketButton.setDisable(true);
+        yourBracket.setDisable(true);
+        randomize.setDisable(true);
         btoolBar.setDisable(true);
         displayPane(loginP);
     }
@@ -177,13 +186,7 @@ public class MarchMadnessGUI extends Application {
       * 
       */
 
-    private void viewBracket(){
-       selectedBracket=simResultBracket;
-       bracketPane=new BracketPane(selectedBracket);
-       GridPane full = bracketPane.getFullPane();
-       full.setAlignment(Pos.CENTER);
-       full.setDisable(true);
-       displayPane(new ScrollPane(full)); 
+
 
     //modified by chris
     private void viewBracket()
@@ -325,6 +328,8 @@ public class MarchMadnessGUI extends Application {
         simulate=new Button("Simulate");
         scoreBoardButton=new Button("ScoreBoard");
         viewBracketButton= new Button("View Simulated Bracket");
+        yourBracket=new Button("View Your Bracket");
+        randomize=new Button("Randomize Bracket");
         clearButton=new Button("Clear");
         resetButton=new Button("Reset");
         finalizeButton=new Button("Finalize");
@@ -334,6 +339,7 @@ public class MarchMadnessGUI extends Application {
                 simulate,
                 scoreBoardButton,
                 viewBracketButton,
+                yourBracket,
                 createSpacer()
         );
         btoolBar.getItems().addAll(
@@ -341,6 +347,7 @@ public class MarchMadnessGUI extends Application {
                 clearButton,
                 resetButton,
                 finalizeButton,
+                randomize,
                 back=new Button("Choose Division"),
                 createSpacer()
         );
@@ -356,7 +363,9 @@ public class MarchMadnessGUI extends Application {
         viewBracketButton.setOnAction(e->viewBracket());
         clearButton.setOnAction(e->clear());
         resetButton.setOnAction(e->reset());
+        yourBracket.setOnAction(e->this.yourBracket());
         finalizeButton.setOnAction(e->finalizeBracket());
+        this.randomize.setOnAction(e->this.randomSelection());
         back.setOnAction(e->{
             bracketPane=new BracketPane(selectedBracket);
             displayPane(bracketPane);
@@ -433,8 +442,10 @@ public class MarchMadnessGUI extends Application {
                     // load bracket
                     selectedBracket=playerMap.get(name);
                     chooseBracket();
+                     randomize.setDisable(false);
                 }else{
                    infoAlert("The password you have entered is incorrect!");
+                    randomize.setDisable(false);
                 }
 
             } else {
