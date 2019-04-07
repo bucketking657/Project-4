@@ -1,3 +1,5 @@
+package marchmadness;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,7 +46,7 @@ public class TournamentInfo{
         try{
 
             /**File for team info*/
-             br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/teamInfo.txt"));
+             br = new BufferedReader(new FileReader("teamInfo.txt"));
 
             while((name = br.readLine()) != null){
                 nickname = br.readLine();
@@ -123,7 +125,7 @@ public class TournamentInfo{
         try{
 
             /**This is where intial matches are read in*/
-          br =new BufferedReader( new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/initialMatches.txt"));
+          br =new BufferedReader( new FileReader("initialMatches.txt"));
 
             while((name = br.readLine()) != null){
                 starting.add(name);
