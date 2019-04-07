@@ -29,7 +29,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-
+import java.util.Optional;
 /**
  *  MarchMadnessGUI
  * 
@@ -54,6 +54,7 @@ public class MarchMadnessGUI extends Application {
     private Button finalizeButton;
     private Button yourBracket;
     private Button randomize;
+    private Button viewPlayerBracketButton;
 
     //allows you to navigate back to division selection screen
     private Button back;
@@ -129,7 +130,31 @@ public class MarchMadnessGUI extends Application {
         launch(args);
     }
     
-    
+    //chris
+    private void serializeBracket(Bracket b)
+    {
+    	String filename= b.getPlayerName()+".ser";
+    	try
+        {    
+            //Saving of object in a file 
+            FileOutputStream file = new FileOutputStream(filename); 
+            ObjectOutputStream out = new ObjectOutputStream(file); 
+              
+            // Method for serialization of object 
+            out.writeObject(b); 
+              
+            out.close(); 
+            file.close(); 
+              
+            System.out.println("Object has been serialized"); 
+  
+        } 
+          
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException is caught"); 
+        } 
+    }
     
     /**
      * simulates the tournament  
@@ -143,7 +168,7 @@ public class MarchMadnessGUI extends Application {
         
        scoreBoardButton.setDisable(false);
        viewBracketButton.setDisable(false);
-
+       viewPlayerBracketButton.setDisable(false);
         yourBracket.setDisable(false);
        
       //chris
@@ -154,6 +179,7 @@ public class MarchMadnessGUI extends Application {
         tmpPlayerBracket.setPassword(password);
         
         playerMap.put(userName, tmpPlayerBracket);
+        serializeBracket(tmpPlayerBracket);
         selectedBracket = tmpPlayerBracket;
 
        teamInfo.simulate(simResultBracket);
@@ -173,7 +199,7 @@ public class MarchMadnessGUI extends Application {
         login.setDisable(false);
         simulate.setDisable(true);
         scoreBoardButton.setDisable(true);//Chris and Josh
-
+        viewPlayerBracketButton.setDisable(true);
   
       
 
@@ -200,12 +226,58 @@ public class MarchMadnessGUI extends Application {
       * 
       */
 
+    public void runUserSelection(){
+        String s;
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Bracket Selection");
+        dialog.setHeaderText("View a User's Bracket");
+        dialog.setContentText("Please enter the username:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+        	s = result.get();
+        	viewBracket(s);
+        	}	
+    	}
+    
+    /*
+    * Task:Displays Simulated Bracket of a user with a specific username
+    * Added by Elizabeth 4/7/2019, adapted from above viewBracket method
+    */
+   private void viewBracket(String s) {
+
+       Bracket someBracket = playerMap.get(s);
+       if(someBracket != null){
+       bracketPane = new BracketPane(simResultBracket, someBracket);
+
+       //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
+       GridPane full = new GridPane();
+       full.add(new ScrollPane(bracketPane.getFullPane()), 0, 0);
+       full.setAlignment(Pos.CENTER);
+
+       full.setMouseTransparent(true);
+
+       displayPane(full);
+       }
+       else{
+           Alert alert = new Alert(AlertType.WARNING);
+           alert.setTitle("Warning");
+           alert.setHeaderText("Bracket not found");
+           alert.setContentText("There is no bracket for a user with this name");
+
+           alert.showAndWait();
+       }
+   }
+    
     //modified by chris
     private void viewBracket()
     {
        //selectedBracket=simResultBracket;
        createdBracket=selectedBracket;//saves your bracket
        bracketPane=new BracketPane(simResultBracket,selectedBracket);
+       //bracketPane = new BracketPane(simResultBracket, selectedBracket);
        //selectedBracket=simResultBracket;
        //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
        GridPane full =new GridPane();
@@ -368,6 +440,7 @@ public class MarchMadnessGUI extends Application {
         btoolBar  = new ToolBar();
         login=new Button("Login");
         simulate=new Button("Simulate");
+        viewPlayerBracketButton = new Button("View a Player's Bracket");
         scoreBoardButton=new Button("ScoreBoard");
         viewBracketButton= new Button("View Simulated Bracket");
         yourBracket=new Button("View Your Bracket");//chris
@@ -382,6 +455,7 @@ public class MarchMadnessGUI extends Application {
                 scoreBoardButton,
                 viewBracketButton,
                 yourBracket,//chris
+                viewPlayerBracketButton,
                 createSpacer()
         );
         btoolBar.getItems().addAll(
@@ -405,6 +479,7 @@ public class MarchMadnessGUI extends Application {
         viewBracketButton.setOnAction(e->viewBracket());
         clearButton.setOnAction(e->clear());
         resetButton.setOnAction(e->reset());
+        viewPlayerBracketButton.setOnAction(e -> runUserSelection());
         yourBracket.setOnAction(e->this.yourBracket());
         finalizeButton.setOnAction(e->finalizeBracket());
         this.randomize.setOnAction(e->this.randomSelection());//chris
@@ -549,7 +624,8 @@ public class MarchMadnessGUI extends Application {
 
             //Josh End
 
-            System.out.println(playerMap.get(name)==null);
+            if(playerMap.get(name)==null)
+            	playerMap.remove(name);
             System.out.println(playerMap.get(name));
             if (playerMap.get(name) != null) {
                 //check password of user
@@ -756,6 +832,7 @@ public class MarchMadnessGUI extends Application {
        
             if (extension.equals("ser")){
                 try{
+                	if(deseralizeBracket(fileName).getPlayerName()!=null)
                 list.add(deseralizeBracket(fileName));
                 }
                 catch (FileNotFoundException e){
