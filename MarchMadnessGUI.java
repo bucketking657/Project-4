@@ -175,9 +175,15 @@ public class MarchMadnessGUI extends Application {
         //We wait until the user has chosen to simulate the game before we save the player bracket. 
         //this is to prevent an error where the score the user gets is always 0
         Bracket tmpPlayerBracket = new Bracket(startingBracket, userName);
-        playerBrackets.add(tmpPlayerBracket);
+        	for(int i=0;i<playerBrackets.size();i++)
+        	{
+        		if(playerBrackets.get(i).getPlayerName().equalsIgnoreCase(userName))
+        		{
+        			playerBrackets.remove(i);
+        		}
+        	}
+        	playerBrackets.add(tmpPlayerBracket);
         tmpPlayerBracket.setPassword(password);
-        
         playerMap.put(userName, tmpPlayerBracket);
         serializeBracket(tmpPlayerBracket);
         selectedBracket = tmpPlayerBracket;
@@ -250,7 +256,7 @@ public class MarchMadnessGUI extends Application {
 
        Bracket someBracket = playerMap.get(s);
        if(someBracket != null){
-       bracketPane = new BracketPane(simResultBracket, someBracket);
+       bracketPane = new BracketPane( someBracket,simResultBracket);
 
        //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
        GridPane full = new GridPane();
@@ -676,7 +682,7 @@ public class MarchMadnessGUI extends Application {
         instruction.setOnAction(event -> {
 
             try {
-                Scanner scan = new Scanner(new File("C:\\Users\\Christopher\\Project4 Prototype\\src\\backup\\Instructions.txt"));
+                Scanner scan = new Scanner(new File("C:\\Users\\Christopher\\please work\\src\\Instructions"));
                 int x = 0;
                 while (scan.hasNext() ) {
 
