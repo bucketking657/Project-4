@@ -1,3 +1,5 @@
+package marchmadness;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,6 +31,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  *  MarchMadnessGUI
@@ -50,6 +53,7 @@ public class MarchMadnessGUI extends Application {
     private Button login;
     private Button scoreBoardButton;
     private Button viewBracketButton;
+    private Button viewPlayerBracketButton;
     private Button clearButton;
     private Button resetButton;
     private Button finalizeButton;
@@ -88,7 +92,7 @@ public class MarchMadnessGUI extends Application {
     private String userName, password;//chris
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
 
         //try to load all the files, if there is an error display it
         try {
@@ -117,6 +121,7 @@ public class MarchMadnessGUI extends Application {
         loginP = createLogin();
         CreateToolBars();
 
+        
         /**display login screen*/
         login();
 
@@ -153,6 +158,7 @@ public class MarchMadnessGUI extends Application {
 
         scoreBoardButton.setDisable(false);
         viewBracketButton.setDisable(false);
+        viewPlayerBracketButton.setDisable(false);
         yourBracket.setDisable(false);
 
         //chris
@@ -185,6 +191,7 @@ public class MarchMadnessGUI extends Application {
         btoolBar.setDisable(true);
         yourBracket.setDisable(true);
         randomize.setDisable(true);
+        viewPlayerBracketButton.setDisable(true);
         viewBracketButton.setDisable(true);//changed to true. This allows you to view the scoreboard before logging in. 
         //However, since the brackets havent been simulated yet there are not scores
 
@@ -204,7 +211,8 @@ public class MarchMadnessGUI extends Application {
      */
     private void viewBracket() {
 
-        createdBracket = selectedBracket;//saves your bracket
+        // this actually was overwriting the bracket - Elizabeth 4/7/19
+        //createdBracket = selectedBracket;//saves your bracket
         bracketPane = new BracketPane(simResultBracket, selectedBracket);
 
         //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
@@ -215,6 +223,35 @@ public class MarchMadnessGUI extends Application {
         full.setMouseTransparent(true);
 
         displayPane(full);
+    }
+    
+    /**
+     * Task:Displays Simulated Bracket of a user with a specific username
+     * Added by Elizabeth 4/7/2019, adapted from above viewBracket method
+     */
+    private void viewBracket(String s) {
+        
+        Bracket someBracket = playerMap.get(s);
+        if(someBracket != null){
+        bracketPane = new BracketPane(simResultBracket, someBracket);
+
+        //The following lines of code were modified to allow the Brackets to be viewed in the center of the screen
+        GridPane full = new GridPane();
+        full.add(new ScrollPane(bracketPane.getFullPane()), 0, 0);
+        full.setAlignment(Pos.CENTER);
+
+        full.setMouseTransparent(true);
+
+        displayPane(full);
+        }
+        else{
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Bracket not found");
+            alert.setContentText("There is no bracket for a user with this name");
+
+            alert.showAndWait();
+        }
     }
 
     //Chris
@@ -233,6 +270,24 @@ public class MarchMadnessGUI extends Application {
         displayPane(full);
     }
 
+    public void runUserSelection(){
+        String s;
+        
+        TextInputDialog dialog = new TextInputDialog();
+dialog.setTitle("Bracket Selection");
+dialog.setHeaderText("View a User's Bracket");
+dialog.setContentText("Please enter the username:");
+
+// Traditional way to get the response value.
+Optional<String> result = dialog.showAndWait();
+if (result.isPresent()){
+    
+    s = result.get();
+    viewBracket(s);
+}
+    
+
+    }
     //Chris
 
     /**Task: Creates afinal bracket before simulation and displays it*/
@@ -339,11 +394,13 @@ public class MarchMadnessGUI extends Application {
         simulate = new Button("Simulate");
         scoreBoardButton = new Button("ScoreBoard");
         viewBracketButton = new Button("View Simulated Bracket");
+        viewPlayerBracketButton = new Button("View a Player's Bracket");
         yourBracket = new Button("View Your Bracket");
         randomize = new Button("Randomize Bracket");
         clearButton = new Button("Clear");
         resetButton = new Button("Reset");
         finalizeButton = new Button("Finalize");
+        
 
         /**Adding buttons to their respected tool bars*/
         toolBar.getItems().addAll(
@@ -352,6 +409,7 @@ public class MarchMadnessGUI extends Application {
                 simulate,
                 scoreBoardButton,
                 viewBracketButton,
+                viewPlayerBracketButton,
                 yourBracket,
                 createSpacer()
         );
@@ -376,6 +434,7 @@ public class MarchMadnessGUI extends Application {
         simulate.setOnAction(e -> simulate());
         scoreBoardButton.setOnAction(e -> scoreBoard());
         viewBracketButton.setOnAction(e -> viewBracket());
+        viewPlayerBracketButton.setOnAction(e -> runUserSelection());
         clearButton.setOnAction(e -> clear());
         resetButton.setOnAction(e -> reset());
         yourBracket.setOnAction(e -> this.yourBracket());
@@ -424,7 +483,7 @@ public class MarchMadnessGUI extends Application {
 
 
         /**Right panel Components and files*/
-        Image image = new Image(new File("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/march2").toURI().toString());
+        Image image = new Image(new File("march2.gif").toURI().toString());
         ImageView i = new ImageView();
         i.setImage(image);
         i.setFitHeight(500);
@@ -516,7 +575,7 @@ public class MarchMadnessGUI extends Application {
 
             //Josh End
 
-            System.out.println(playerMap.get(name) == null);
+            //System.out.println(playerMap.get(name) == null);
             System.out.println(playerMap.get(name));
             if (playerMap.get(name) != null) {
                 //check password of user
@@ -571,7 +630,7 @@ public class MarchMadnessGUI extends Application {
             Scanner scan= null;
             try {
 
-                scan = new Scanner(new File("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/Instructions.txt"));
+                scan = new Scanner(new File("Instructions.txt"));
 
                 while (scan.hasNext()) {
 
