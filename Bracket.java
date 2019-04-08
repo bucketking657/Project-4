@@ -169,6 +169,7 @@ public class Bracket implements Serializable {
             bracket.set(child, "");
          }
     }
+    
     /**Task: This is how the user can reset the entire tree or the entire selection
      *@param root location that is going to be set*/
      public void resetFullTree(int root) {
