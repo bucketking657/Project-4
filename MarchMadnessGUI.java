@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -442,18 +443,40 @@ public class MarchMadnessGUI extends Application {
      * adds buttons to the toolbar and saves global references to them
      */
     private void CreateToolBars(){
+    	ArrayList<Button> buttons = new ArrayList<Button>();	//edited by Zion 4/8
         toolBar  = new ToolBar();
         btoolBar  = new ToolBar();
+        
         login=new Button("Login");
+        buttons.add(login);
+        
         simulate=new Button("Simulate");
+        buttons.add(simulate);
+        
         viewPlayerBracketButton = new Button("View a Player's Bracket");
+        buttons.add(viewPlayerBracketButton);
+        
         scoreBoardButton=new Button("ScoreBoard");
+        buttons.add(scoreBoardButton);
+        
         viewBracketButton= new Button("View Simulated Bracket");
+        buttons.add(viewBracketButton);
+        
         yourBracket=new Button("View Your Bracket");//chris
+        buttons.add(yourBracket);
+        
         randomize=new Button("Randomize Bracket");//chris
+        buttons.add(randomize);
+        
         clearButton=new Button("Clear");
+        buttons.add(clearButton);
+        
         resetButton=new Button("Reset");
+        buttons.add(resetButton);
+        
         finalizeButton=new Button("Finalize");
+        buttons.add(finalizeButton);
+        
         toolBar.getItems().addAll(
                 createSpacer(),
                 login,
@@ -471,8 +494,26 @@ public class MarchMadnessGUI extends Application {
                 finalizeButton,
                 randomize,//chris
                 back=new Button("Home"),
+                
                 createSpacer()
         );
+        buttons.add(back);
+        
+        for(Button b: buttons) {								//added by zion 4/8 change style
+        	b.setFont(Font.font("Arial", FontWeight.BOLD,12));
+            b.setStyle("-fx-base: ADD8E6 ;");
+            //b.setPadding(new Insets(10,0,10,65));
+        	 b.setOnMouseEntered(mouseEvent -> {
+                 b.setStyle("-fx-background-color: lightblue;");
+                 
+                 b.setEffect(new InnerShadow(10, Color.LIGHTCYAN));
+             });
+             b.setOnMouseExited(mouseEvent -> {
+                 b.setStyle("-fx-base: ADD8E6 ;");
+                 b.setEffect(null);
+             });
+        }
+        
     }
     
    /**
@@ -533,7 +574,7 @@ public class MarchMadnessGUI extends Application {
 
         //Josh Start
         //Right panel
-        Image image = new Image(new File("/home/jshilts/IdeaProjects/Project 4 v2/src/march2").toURI().toString());
+        Image image = new Image(new File("march2").toURI().toString());
         ImageView i = new ImageView();
         i.setImage(image);
         i.setFitHeight(500);
@@ -682,7 +723,7 @@ public class MarchMadnessGUI extends Application {
         instruction.setOnAction(event -> {
 
             try {
-                Scanner scan = new Scanner(new File("C:\\Users\\Christopher\\please work\\src\\Instructions"));
+                Scanner scan = new Scanner(new File("Instructions"));
                 int x = 0;
                 while (scan.hasNext() ) {
 
