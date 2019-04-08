@@ -58,7 +58,7 @@ public class MarchMadnessGUI extends Application {
     private Button viewPlayerBracketButton;
 
     //allows you to navigate back to division selection screen
-    private Button back;
+    private Button home;//chris
   
     
     private  Bracket startingBracket; 
@@ -493,11 +493,11 @@ public class MarchMadnessGUI extends Application {
                 resetButton,
                 finalizeButton,
                 randomize,//chris
-                back=new Button("Home"),
+                home=new Button("Home"),//chris
                 
                 createSpacer()
         );
-        buttons.add(back);
+        buttons.add(home);//chris
         
         for(Button b: buttons) {								//added by zion 4/8 change style
         	b.setFont(Font.font("Arial", FontWeight.BOLD,12));
@@ -530,7 +530,7 @@ public class MarchMadnessGUI extends Application {
         yourBracket.setOnAction(e->this.yourBracket());
         finalizeButton.setOnAction(e->finalizeBracket());
         this.randomize.setOnAction(e->this.randomSelection());//chris
-        back.setOnAction(e->{
+        home.setOnAction(e->{//chris
             bracketPane=new BracketPane(selectedBracket,this);
             displayPane(bracketPane);
         });
