@@ -108,7 +108,7 @@ public class ScoreBoardTable {
     /**Task: Method addPlayer adds a player to the Bracket
      *
      * @param name player name to be added as key*/
-    public void addPlayer(Bracket name) {//int score){
+    public void addPlayer(Bracket name, int score){
         try {
             if (scores == null) {
                 //scores = new HashMap<Bracket, Integer>();
@@ -118,7 +118,7 @@ public class ScoreBoardTable {
              is less than 16 players*/
             if (scores.get(name) != null || scores.size() < MAX_PLAYER_NUMBER) {
                 //score= name.scoreBracket(name);
-                scores.put(name, name.getScore());
+                scores.put(name, score);
                 System.out.println(name.getScore()+"score teset");
                 data.add(name);
             }
