@@ -5,23 +5,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-
-/**
- * Created by Artem on 5/2/2017.
- */
+/**Task: This is the tournament class that deals with reading in the team
+ *       info and serializing it to make each user tournament infor unique*/
 public class TournamentInfo{//renamed from teamInfo by matt 5/4
+
+    /**The data structure that will allow us to accesss a teams data by using that teams names as a key*/
     HashMap<String, Team> teams;
 
+    /**Task: This is the tournament info constructor. It throws an IO exception because
+     *       all the info for the tournament is read from a file
+     *@throws IOException makes sure team files are not null*/
     public TournamentInfo() throws IOException{
+
         teams = new HashMap<>();
+
+        /**Method that intiates the reading teams from file*/
         loadFromFile();
     }
 
-    /**
-     * This private method will load all the team information from the teamInfo.txt file via a BufferedReader and load each team into
-     * the teams HashMap using their name as the key and the actual Team object as the data.
-     * @authors Artem, Rodrigo
-     */
+    /**Task: This private method will load all the team information from the teamInfo.txt
+     *       file via a BufferedReader and load each team into the teams HashMap using
+     *       their name as the key and the actual Team object as the data.
+     *
+     * @throws IOException Throws this exception to make sure file being read is not null*/
     private void loadFromFile() throws IOException{
 
         String name;
@@ -32,56 +38,55 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         double defensivePPG;
 
 
+        BufferedReader br = null;//Josh
+
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Christopher\\please work\\src\\teamInfo.txt"));
-
+            /**File for team info*/
+            br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/teamInfo.txt"));
 
             while((name = br.readLine()) != null){
-            	nickname = br.readLine();
+                nickname = br.readLine();
                 info = br.readLine();
                 ranking = Integer.parseInt(br.readLine());
                 offensivePPG = Double.parseDouble(br.readLine());
                 defensivePPG = Double.parseDouble(br.readLine());
-                
+
                 Team newTeam = new Team(name, nickname, info, ranking, offensivePPG, defensivePPG); //creates team with info
 
                 br.readLine();   //gets rid of empty line between team infos
 
                 teams.put(newTeam.getName(), newTeam);   //map team name with respective team object
             }
-
-            br.close();
-
         }
+
         catch(IOException ioe) {
             throw ioe;
-        }
+        }//Josh Start
+
+        finally {
+            br.close();
+        }//Josh End
     }
 
-    /**
-     * This method will take a parameter of a team name and return the Team object corresponding to it.
-     * If it is unsuccessful, meaning the team does not exist, it will throw an exception.
-     * @authors Artem
-     * @param teamName -- the name of the team to be found
-     * @return the Team object for that team
-     * @throws Exception in case it's not in there
-     */
+    /**Task: This method will take a parameter of a team name and return the
+     *       Team object corresponding to it.If it is unsuccessful, meaning
+     *       the team does not exist, it will throw an exception.
+     *
+     * @param teamName the team whose name I want
+     * @return A team name*/
     public Team getTeam(String teamName){
         return teams.get(teamName);
     }
 
-    /**
-     * This will be the method that actually does the work of determining the outcome of the games.
-     * It will use the seed/ranking from each team on the bracket and put it into an algorithm to somewhat randomly generate a winner
-     * @authors Artem, Dan, Matt
-     * @param startingBracket -- the bracket to be simulated upon. The master bracket
-     */
+    /**Task: This will be the method that actually does the work of determining the outcome
+     *       of the games. It will use the seed/ranking from each team on the bracket and put
+     *       it into an algorithm to somewhat randomly generate a winner
+     *
+     * @param startingBracket -- the bracket to be simulated upon. The master bracket*/
     public void simulate(Bracket startingBracket){
+
         for (int i = 62; i >= 0; i--) {
-        /* The equation for score that I settled on is this:
-         * (Random int 75-135) * (1 - 0.02 * seed ranking)
-         * This way, the multiplier would be between 0.68 and 0.98. Multiply that by 75-135, and you get a reasonable score with room for chance to prevail for lower teams. */
 
             int index1 = 2*i+1;
             int index2 = 2*i+2;
@@ -104,34 +109,39 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
             else
                 startingBracket.moveTeamUp(index2);
         }
-
     }
 
-    /**
-     * reads Strings from initialMatches.txt into an ArrayList in order to construct the starting bracket
-     * @authors Matt, Artem
-     * @return ArrayList of Strings
-     */
+    /**Task: Reads Strings from initialMatches.txt into an ArrayList in order to construct the starting bracket
+     * @return ArrayList of Strings*/
     public static ArrayList<String> loadStartingBracket() throws IOException{
+
         String name;
         ArrayList<String> starting = new ArrayList<String>();
-
+        BufferedReader br= null;//Josh;//Josh
 
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Christopher\\please work\\src\\initialMatches.txt"));
-
+            /**This is where intial matches are read in*/
+            br =new BufferedReader( new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/initialMatches.txt"));
 
             while((name = br.readLine()) != null){
                 starting.add(name);
             }
-            
-            br.close();
         }
-        catch(IOException ioe){
-            throw ioe;
-        }
-        return starting;
 
+        catch(IOException ioe){
+            ioe.printStackTrace();
+            System.out.print("blah");
+            
+            //Josh Start
+        }finally {
+            if(br!=null)
+
+                br.close();
+
+        }//Josh End
+
+        return starting;
     }
-}
+
+}//End Class
