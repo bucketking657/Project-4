@@ -43,7 +43,7 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         try{
 
             /**File for team info*/
-            br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/teamInfo.txt"));
+            br = new BufferedReader(new FileReader("C:\\Users\\Christopher\\please work\\src\\teamInfo.txt"));
 
             while((name = br.readLine()) != null){
                 nickname = br.readLine();
@@ -122,7 +122,7 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         try{
 
             /**This is where intial matches are read in*/
-            br =new BufferedReader( new FileReader("/home/jshilts/IdeaProjects/Project 4 Prototypev2/src/initialMatches.txt"));
+            br =new BufferedReader( new FileReader("C:\\Users\\Christopher\\please work\\src\\initialMatches.txt"));
 
             while((name = br.readLine()) != null){
                 starting.add(name);
