@@ -191,7 +191,8 @@ public class MarchMadnessGUI extends Application {
        teamInfo.simulate(simResultBracket);
        yourBracket.setDisable(false);
        for(Bracket b:playerBrackets){
-           scoreBoard.addPlayer(b,b.scoreBracket(simResultBracket));
+    	   b.setScore(b.scoreBracket(simResultBracket));
+           scoreBoard.addPlayer(b);//,b.scoreBracket(simResultBracket));
        }
         
         displayPane(table);
