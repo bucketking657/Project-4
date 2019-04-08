@@ -174,7 +174,7 @@ public class MarchMadnessGUI extends Application {
       //chris
         //We wait until the user has chosen to simulate the game before we save the player bracket. 
         //this is to prevent an error where the score the user gets is always 0
-        Bracket tmpPlayerBracket = new Bracket(startingBracket, userName);
+        Bracket tmpPlayerBracket = new Bracket(selectedBracket, userName);
         	for(int i=0;i<playerBrackets.size();i++)
         	{
         		if(playerBrackets.get(i).getPlayerName().equalsIgnoreCase(userName))
