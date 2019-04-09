@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 /**Task: This is the tournament class that deals with reading in the team
  *       info and serializing it to make each user tournament infor unique*/
@@ -37,13 +36,12 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         double offensivePPG;
         double defensivePPG;
 
-
         BufferedReader br = null;//Josh
 
         try{
 
             /**File for team info*/
-            br = new BufferedReader(new FileReader("teamInfo.txt"));
+            br = new BufferedReader(new FileReader("/home/jshilts/IdeaProjects/Project 4 FinalVersion/src/TournamentInfo.java"));
 
             while((name = br.readLine()) != null){
                 nickname = br.readLine();
@@ -61,6 +59,7 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         }
 
         catch(IOException ioe) {
+            System.out.println("Thrown where teaminfo is read line 46");
             throw ioe;
         }//Josh Start
 
@@ -112,6 +111,7 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
     }
 
     /**Task: Reads Strings from initialMatches.txt into an ArrayList in order to construct the starting bracket
+     * @throws IOException checks to makes sure were can read
      * @return ArrayList of Strings*/
     public static ArrayList<String> loadStartingBracket() throws IOException{
 
@@ -122,7 +122,7 @@ public class TournamentInfo{//renamed from teamInfo by matt 5/4
         try{
 
             /**This is where intial matches are read in*/
-            br =new BufferedReader( new FileReader("initialMatches.txt"));
+            br =new BufferedReader( new FileReader("/home/jshilts/IdeaProjects/Project 4 FinalVersion/src/initialMatches.txt"));
 
             while((name = br.readLine()) != null){
                 starting.add(name);
