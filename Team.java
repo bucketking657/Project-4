@@ -1,3 +1,4 @@
+import java.util.Objects;
 
 /**Task: This is the mean class that provides encapsulation for all the teams being read
  *       in from the text file. it also proved functiona lties to organize and manupulate
@@ -19,8 +20,11 @@ public class Team{
     /**Task: This is class teams paramitzed constructor. It will encapulate a team and
      *       their data so they can be used to pare or compete in the simulation
      * @param name The name of the team
+     * @param nickname the nickname of the team
      * @param info A short description of the team
-     * @param ranking The ranking in the team region from 1 to 16*/
+     * @param ranking The ranking in the team region from 1 to 16
+     * @param oPPG offensive points per game
+     * @param dPPG Defencsive points per game*/
     public Team(String name, String nickname, String info, int ranking, double oPPG, double dPPG){
         this.name = name;
         this.nickname = nickname;
@@ -97,4 +101,51 @@ public class Team{
     public void setOffense(double newOffense){
         offensePPG =  newOffense;
     }
+
+    //Josh Start
+    @Override
+    /**Task: Formats a teams class data into a string
+     * @return a formatted String with a team information*/
+    public String toString() {
+        return "Team{" +
+                "name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", info='" + info + '\'' +
+                ", ranking=" + ranking +
+                ", offensePPG=" + offensePPG +
+                ", defensePPG=" + defensePPG +
+                '}';
+    }
+
+    @Override
+    /**Task: Check to see if two team are exactly alike
+     * @param obj the team to be compared
+     * @return true or false based on weather the team are the same*/
+    public boolean equals(Object obj) {
+
+        boolean flag;
+
+        if (obj == null || getClass() != obj.getClass())
+                flag = false;
+
+        Team team = (Team) obj;
+
+        flag = ranking == team.ranking &&
+                Double.compare(team.offensePPG, offensePPG) == 0 &&
+                Double.compare(team.defensePPG, defensePPG) == 0 &&
+                name.equals(team.name) &&
+                nickname.equals(team.nickname) &&
+                info.equals(team.info) &&
+                this.hashCode()== obj.hashCode();
+
+        return flag;
+    }
+
+    @Override
+    /**Task: Give a hashcode value of a specific item
+     * @return a unique hashcode for this team*/
+    public int hashCode() {
+        return Objects.hash(name, nickname, info, ranking, offensePPG, defensePPG);
+    }
+    //Josh End
 }// End Team Class

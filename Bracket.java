@@ -1,13 +1,10 @@
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * @author jshilts
- * Created by Matt and Dan on 5/1/2017.
- * Contributor: Hillary Ssemakula 5/1
- * Contributor: Joshua Shilts 4/?/19
- * @description This is the bracket class it hold information pertain to a specific user or
+/**Contributor: Joshua Shilts 4/?/19
+ * Task:  This is the bracket class it hold information pertain to a specific user or
  *        player and the choice they have made and the core they have received. This class also implements the
  *        serializable interface to help keep this data encapsulated.*/
 public class Bracket implements Serializable {
@@ -15,7 +12,6 @@ public class Bracket implements Serializable {
     //User Info
     private String playerName;
     private String password;
-    private int score = 0;
 
     private ArrayList<String> bracket;
     private transient int[] teamScores = new int[127];
@@ -249,7 +245,8 @@ public class Bracket implements Serializable {
 
     /**Task: Scores the bracket by assigning points of each correct winner number of
      *       points is based on round
-     * @param master, the master bracket of true winners to which all brackets are compared*/
+     * @param master the master bracket of true winners to which all brackets are compared
+     * @return the users score for that bracket*/
     public int scoreBracket(Bracket master){
 
         int score = 0;
@@ -307,10 +304,8 @@ public class Bracket implements Serializable {
      *@param b the new value sim will be set to*/
     public void setSim(boolean b) { isSim=b; }
 
-    /**Task: will set score value o
-     *@param x the new value score will be set to*/
-    public void setScore(int x){ score = x; }
 
+    //Josh Start
     @Override
     /**Task: return a formatted datafeild of this brackets data
      * @return a foramteed String with a brackets data*/
@@ -320,14 +315,62 @@ public class Bracket implements Serializable {
                 ", teamScores=" + Arrays.toString(teamScores) +
                 ", playerName='" + playerName + '\'' +
                 ", password='" + password + '\'' +
-                ", score=" + score +
                 ", isSim=" + isSim +
                 '}';
     }
 
-    /**Task: will return a score that is part of a bracket
-     * @return the score for the bracket*/
-    public int getScore(){ return score; }
-}
+    @Override
+    /**Task: Will return a hascode unique to and for this bracket
+     * @return an int id for this bracket*/
+    public int hashCode() {
+        int result = Objects.hash(playerName, password, bracket, isSim);
+        result = 31 * result + Arrays.hashCode(teamScores);
+        return result;
+    }
+
+    @Override
+    /**Task: test to see if two objects are equal
+     * @param obj object to be compared
+     * @return true or false ifg the object are the same*/
+    public boolean equals(Object obj) {
+
+        boolean flag;
+        if((obj == null) || (getClass() != obj.getClass()))
+            flag = false;
+        else{
+
+            Bracket temp = (Bracket)obj;
+            flag = playerName.equals(temp.playerName) &&
+                    password.equals(temp.password) &&
+                    isSim == temp.isSim &&
+                    this.hashCode() != temp.hashCode();
+
+            if(flag != false) {
+
+                for (String first : bracket) {
+
+                    for (String second : temp.getBracket()) {
+
+                        if (!first.equals(second))
+                            flag = false;
+                    }
+                }
+            }
+
+            if(flag != false) {
+
+                for(int i = 0; i < teamScores.length-1;i++) {
+                    for(int j = 0; i < temp.teamScores.length-1;i++){
+
+                        if(i>j || i<j)
+                            flag = false;
+                    }
+                }
+            }
+        }
+        return flag;
+    }
+    //Josh End
+}//End Class
 
 

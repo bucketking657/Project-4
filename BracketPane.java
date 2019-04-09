@@ -19,11 +19,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Objects;
 import javafx.scene.layout.Region;
 
 /**Task: This is the BracketPane class that combines the structural functionalities of bracket and
@@ -146,7 +145,8 @@ public class BracketPane extends BorderPane {
     };
 
     /**Task: Included this to fix a bug where a user would click clear twice and if would auto default to
-     *      sending them back to the fullpane view*/
+     *      sending them back to the fullpane view
+     * @param l your last position */
     public void updateLast(int l) { this.lastposition=l; }//Chris
 
     /**Task: Will return a gridPane that hold all of our brackets
@@ -583,9 +583,9 @@ public class BracketPane extends BorderPane {
                 last.setName(currentBracket.getBracket().get(location));
 
                 ///chris
-
                 if(sim!=null) {
-                    //check to see if the division final choices match thesimulated choices. If they do color them green. If not color them red
+                    /**check to see if the division final choices match the simulated choices.
+                     * If they do color them green. If not color them red*/
                     if(currentBracket.getBracket().get(location).equalsIgnoreCase(sim.getBracket().get(location))) {
                         last.setColor(Color.GREEN);
 
@@ -653,7 +653,6 @@ public class BracketPane extends BorderPane {
 
                     bracketMap.put(aNodeList.get(j), tmpHelp.get(j));
                     nodeMap.put(tmpHelp.get(j), aNodeList.get(j));
-                                        
                 }
             }
         }
@@ -709,5 +708,48 @@ public class BracketPane extends BorderPane {
             name.setFont(new Font(10));
             name.setText(teamName);
         }
+
+        //Josh Start
+        @Override
+        /**Task: This is the equals method and checks to see if two pans are the same
+         * @param o the object to be compared
+         * @return true or false if the objects are the same*/
+        public boolean equals(Object o) {
+
+            boolean flag;
+
+            if (o == null || getClass() != o.getClass())
+
+                flag = false;
+
+            else {
+
+                BracketNode temp = (BracketNode) o;
+
+                flag = teamName.equals(temp.teamName) &&
+                        name.equals(temp.name) &&
+                        hashCode() == temp.hashCode();
+            }
+            return flag;
+        }
+
+        @Override
+        /**Task: This method will genrate a hashcode for team name and name
+         * @return an int calue*/
+        public int hashCode() {
+            return Objects.hash(teamName, name);
+        }
+
+        @Override
+        /**Task: Will give us a formatted String of this panes data
+         * @return a String containing a bracketPanes data*/
+        public String toString() {
+            return "BracketNode{" +
+                    "teamName='" + teamName + '\'' +
+                    ", name=" + name +
+                    ", hashCode = " + hashCode() +'\''+
+                    '}';
+        }
+        //Josh End
     }
 }//End Class
