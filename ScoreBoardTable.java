@@ -7,8 +7,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,110 +18,103 @@ import java.util.Map;
  */
 public class ScoreBoardTable {
 
-    /**
-     * attributes
-     */
+    /**Data structure that will hold a players bracket and their score for it*/
     private Map<Bracket, Integer> scores;
+
+    /**Max amount of players*/
     private static final int MAX_PLAYER_NUMBER = 16;
+
+    /**Task:tables where data gets sent to be displayed*/
     private TableView<Bracket> table;
     private ObservableList<Bracket> data;
 
-    /**
-     * ScoreBoardPane constructor
-     */
+    /**Task:ScoreBoardPane constructor*/
     @SuppressWarnings("unchecked")
     public ScoreBoardTable() {
         table = new TableView<>();
         data = FXCollections.observableArrayList();
         scores = new HashMap<>();
 
-        /**
-         * TableColumn userNameCol is the column on the left side of the table.
-         * userNameCol.setCellValueFactory() passes the data to the TableView object, which is
-         *                                   automatically sorted with the TableColumn.SortType.DESCENDING
-         *                                   code line.
-         */
+        /**Task: Passes the data to the TableView object, which is
+         *       automatically sorted with the TableColumn.SortType.DESCENDING code line.
+         *       <p>
+         *      TableColumn userNameCol is the column on the left side of the table.
+         *      userNameCol.setCellValueFactory()*/
         TableColumn<Bracket, String> userNameCol = new TableColumn<>("Username");
+
         userNameCol.setMinWidth(140);
         userNameCol.setMaxWidth(140);
         userNameCol.setStyle("-fx-border-width: 3px");
         userNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Bracket, String>, ObservableValue<String>>() {
+
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Bracket, String> b) {
                 return new SimpleStringProperty(b.getValue().getPlayerName());
             }
         });
+
         userNameCol.setSortable(true);
         userNameCol.setSortType(TableColumn.SortType.DESCENDING); //sorts column from highest to lowest
 
-        /**
-         * TableColumn totalPtsCol is the column on the right side of the table
-         * totalPtsCol.setCellValueFactory() passes the data to the TableView object, which is
-         *                                   automatically sorted with the TableColumn.SortType.DESCENDING
-         *                                   code line.
-         */
+        /**Task: Passes the data to the TableView object, which is automatically sorted
+         *       with the TableColumn.SortType.DESCENDING code line.
+         *       <p>
+         *      TableColumn totalPtsCol is the column on the right side of the table
+         *      totalPtsCol.setCellValueFactory()*/
         TableColumn<Bracket, Number> totalPtsCol = new TableColumn<>("Total Points");
+
         totalPtsCol.setMinWidth(140);
         totalPtsCol.setMaxWidth(140);
         totalPtsCol.setStyle("-fx-border-width: 3px");
         totalPtsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Bracket, Number>, ObservableValue<Number>>() {
+
             public ObservableValue<Number> call(TableColumn.CellDataFeatures<Bracket, Number> b) {
                 return new SimpleIntegerProperty(scores.get(b.getValue()));
             }
         });
+
         totalPtsCol.setSortable(true);
-        
         totalPtsCol.setSortType(TableColumn.SortType.DESCENDING); //sorts column from highest to lowest
 
-        /**
-         * TableView table_view is what the user sees in the GUI. This creates the table.
-         *
-         */
-        
-        
+        /**TasK: TableView table_view is what the user sees in the GUI. This creates the table.*/
         SortedList<Bracket> sortData = new SortedList<>(data);				//added by zion 4/4 wraps the data
         sortData.comparatorProperty().bind(table.comparatorProperty());		//sortData sorts the data according to columns in the sortOrder list
-        
-        
-        
+
         table.setItems(sortData);
-        
-        //table.getSelectionModel().setCellSelectionEnabled(true
         table.sort();
         table.getSortOrder().addAll(totalPtsCol, userNameCol);			//added by zion 4/4 table columns passed in are sorted based on column's sort type IF sortable is true
-        
-        
         table.getColumns().setAll(userNameCol,totalPtsCol);
-        
     }
 
-    public TableView<Bracket> start() {
-                
-        return table;
-    }
+    /**Task: show us the table with points
+     *@return the table with a users points*/
+    public TableView<Bracket> start() { return table; }
 
-    //Ying's code, method addPlayer adds a player to the Bracket
+    /**Task: Method addPlayer adds a player to the Bracket
+     *
+     * @param name the name of whose bracket this is
+     * @param score the score of that bracket*/
     public void addPlayer(Bracket name, int score) {
+
         try {
+
             if (scores == null) {
                 scores = new HashMap<Bracket, Integer>();
             }
-            //only allow to update the existing player score or add new player if there
-            //is less than 16 players
+
+            /**Task: Only allow to update the existing player score or add new player if there
+            *        is less than 16 players*/
             if (scores.get(name) != null || scores.size() < MAX_PLAYER_NUMBER) {
                 scores.put(name, score);
                 data.add(name);
-                
-                System.out.println("added: " + name.getPlayerName() + " " + score);
             }
-            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    //Ying's code, method clears the players from the Bracket
+    /**TasK:This will clear the map of any players and their scores*/
     public void clearPlayers() {
         scores = new HashMap<Bracket, Integer>();
         data = FXCollections.observableArrayList();
     }
-}
+}//End Class
