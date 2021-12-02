@@ -512,7 +512,7 @@ public class MarchMadnessGUI extends Application {
 
         //Josh Start
         //Right panel
-        Image image = new Image(new File("/home/jshilts/IdeaProjects/Project 4 FinalVersion/src/MarchMadnessGif").toURI().toString());
+        Image image = new Image(new File("MarchMadnessGif").toURI().toString());
         ImageView i = new ImageView();
         i.setImage(image);
         i.setFitHeight(500);
@@ -658,7 +658,7 @@ public class MarchMadnessGUI extends Application {
 
             try {
 
-                scan = new Scanner(new File("/home/jshilts/IdeaProjects/Project 4 FinalVersion/src/Instructions (copy).txt"));
+                scan = new Scanner(new File("Instructions.txt");
 
                 while (scan.hasNext() ) {
 
